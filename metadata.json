@@ -1,0 +1,5 @@
+{
+  "name": "PromptCraft VN",
+  "description": "Ứng dụng tối ưu hóa prompt đa tác vụ (Research, Ảnh, Video, Outline, Nhạc) sử dụng Gemini API. Lưu trữ cục bộ, không backend.",
+  "requestFramePermissions": []
+}
