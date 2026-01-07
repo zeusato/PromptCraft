@@ -40,31 +40,44 @@ const Sidebar: React.FC<SidebarProps> = ({
       )}
 
       <aside className={`
-        fixed md:relative z-30 w-64 h-full bg-surface border-r border-border flex flex-col transition-transform duration-300 shadow-xl md:shadow-none
+        fixed md:relative z-30 w-72 h-[100dvh] flex flex-col transition-transform duration-300 bg-surface border-r border-border
         ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
       `}>
-        <div className="p-4 border-b border-border flex items-center justify-between">
-          <div className="flex items-center gap-2 text-primary font-bold text-xl">
-            <span className="material-symbols-rounded">auto_awesome</span>
-            <span>PromptCraft</span>
+        {/* Logo Area */}
+        <div className="p-6 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-gradient-to-br from-primary to-purple-600 rounded-xl shadow-lg shadow-primary/20">
+              <span className="material-symbols-rounded text-white text-xl">auto_awesome</span>
+            </div>
+            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600 dark:from-white dark:to-slate-400 font-heading tracking-tight">
+              PromptCraft
+            </span>
           </div>
-          <button onClick={toggleSidebar} className="md:hidden text-secondary">
+          <button onClick={toggleSidebar} className="md:hidden text-secondary hover:text-white transition-colors">
             <span className="material-symbols-rounded">close</span>
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-2">
-          <div className="flex items-center justify-between px-2 mb-2 mt-2">
-            <span className="text-xs font-semibold text-secondary uppercase tracking-wider">{t('sidebar.history')}</span>
+        {/* History List */}
+        <div className="flex-1 overflow-y-auto px-4 py-2 space-y-4 scrollbar-thin">
+          <div className="flex items-center justify-between px-2">
+            <span className="text-[10px] font-bold text-accent uppercase tracking-widest">{t('sidebar.history')}</span>
             {history.length > 0 && (
-              <button onClick={onClearHistory} className="text-xs text-red-400 hover:text-red-300 dark:hover:text-red-400">{t('common.delete')}</button>
+              <button
+                onClick={onClearHistory}
+                className="text-[10px] uppercase font-bold text-red-400/70 hover:text-red-400 transition-colors flex items-center gap-1"
+              >
+                <span className="material-symbols-rounded text-[14px]">delete_sweep</span>
+                {t('common.delete')}
+              </button>
             )}
           </div>
 
-          <div className="space-y-1">
+          <div className="space-y-2">
             {history.length === 0 && (
-              <div className="px-4 py-8 text-center text-secondary text-sm italic">
-                {t('sidebar.empty')}
+              <div className="p-8 text-center border border-dashed border-white/10 rounded-2xl bg-white/5 mx-2">
+                <span className="material-symbols-rounded text-4xl text-white/10 mb-2">history</span>
+                <p className="text-secondary text-sm italic">{t('sidebar.empty')}</p>
               </div>
             )}
             {history.map((item) => {
@@ -76,36 +89,43 @@ const Sidebar: React.FC<SidebarProps> = ({
               return (
                 <div
                   key={item.id}
-                  className="w-full text-left p-2 rounded hover:bg-background/80 group flex items-start gap-3 transition border border-transparent hover:border-border relative"
+                  className="group relative w-full text-left p-3 rounded-xl transition-all duration-300 hover:bg-black/5 dark:hover:bg-white/5 border border-transparent hover:border-black/5 dark:hover:border-white/10 overflow-hidden"
                 >
                   <button
                     onClick={() => {
                       onSelectHistory(item);
                       if (window.innerWidth < 768) toggleSidebar();
                     }}
-                    className="flex items-start gap-3 flex-1 text-left"
+                    className="flex items-center gap-3 w-full text-left"
                   >
-                    <span className="material-symbols-rounded text-secondary group-hover:text-primary mt-0.5 text-lg">
-                      {getIcon(item.type)}
-                    </span>
-                    <div className="overflow-hidden">
-                      <p className="text-sm text-main group-hover:text-primary truncate font-medium">
+                    <div className="p-2 rounded-md bg-black/5 dark:bg-white/5 text-secondary group-hover:text-primary group-hover:bg-primary/10 transition-colors shrink-0">
+                      <span className="material-symbols-rounded text-lg">
+                        {getIcon(item.type)}
+                      </span>
+                    </div>
+
+                    <div className="flex-1 min-w-0 flex flex-col items-start justify-center">
+                      <p className="text-sm font-medium text-main/80 dark:text-slate-200 group-hover:text-primary dark:group-hover:text-white truncate w-full text-left transition-colors">
                         {categoryName}
                       </p>
-                      <p className="text-xs text-secondary truncate">
-                        {timeStr} - {dateStr}
+                      <p className="text-xs text-secondary group-hover:text-main/60 dark:group-hover:text-slate-400 flex items-center gap-1 mt-0.5">
+                        <span className="w-1 h-1 rounded-full bg-slate-600"></span>
+                        {timeStr}
+                        <span className="w-1 h-1 rounded-full bg-slate-600"></span>
+                        {dateStr}
                       </p>
                     </div>
                   </button>
+
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       onDeleteHistoryItem(item.id);
                     }}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity text-secondary hover:text-red-500 p-1 shrink-0"
+                    className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-400/10 transition-all translate-x-2 group-hover:translate-x-0"
                     title={t('common.delete')}
                   >
-                    <span className="material-symbols-rounded text-base">close</span>
+                    <span className="material-symbols-rounded text-sm">close</span>
                   </button>
                 </div>
               );
@@ -113,12 +133,13 @@ const Sidebar: React.FC<SidebarProps> = ({
           </div>
         </div>
 
-        <div className="p-4 border-t border-border space-y-2 bg-background/30">
+        {/* Settings Footer */}
+        <div className="p-4 mt-auto">
           <button
             onClick={onOpenSettings}
-            className="w-full flex items-center gap-3 p-2 rounded text-secondary hover:bg-background hover:text-primary transition"
+            className="w-full flex items-center gap-3 p-3 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 border border-transparent hover:border-white/10 transition-all group"
           >
-            <span className="material-symbols-rounded">settings</span>
+            <span className="material-symbols-rounded group-hover:rotate-45 transition-transform duration-500">settings</span>
             <span className="text-sm font-medium">{t('sidebar.settings')}</span>
           </button>
         </div>

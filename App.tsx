@@ -45,7 +45,10 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden">
+    <div className="flex h-screen w-screen overflow-hidden bg-background dark:bg-cosmic-gradient relative transition-colors duration-300">
+      {/* Background decoration */}
+      <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-0 dark:opacity-20 pointer-events-none mix-blend-overlay"></div>
+
       <Sidebar
         history={history}
         onSelectHistory={handleSelectHistory}
@@ -57,12 +60,12 @@ const App: React.FC = () => {
         toggleSidebar={() => setSidebarOpen(!isSidebarOpen)}
       />
 
-      <div className="flex-1 flex flex-col h-full relative">
+      <div className="flex-1 flex flex-col h-full relative z-10 glass-effect rounded-l-3xl overflow-hidden ml-0 md:ml-4 my-0 md:my-4 mr-0 md:mr-4 border border-white/10 shadow-2xl backdrop-blur-xl">
         <button
-          className="md:hidden absolute top-3 left-4 z-20 bg-surface p-2 rounded-full shadow-lg border border-slate-700 text-slate-200"
+          className="md:hidden fixed bottom-28 left-6 z-50 p-3 rounded-full bg-primary/90 border border-white/20 text-white shadow-lg shadow-primary/30 backdrop-blur-xl active:scale-95 transition-transform"
           onClick={() => setSidebarOpen(true)}
         >
-          <span className="material-symbols-rounded">menu</span>
+          <span className="material-symbols-rounded text-2xl">menu</span>
         </button>
 
         <Workspace

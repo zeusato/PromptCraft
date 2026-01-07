@@ -20,6 +20,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
     const [output, setOutput] = useState<PromptOutput | null>(null);
     const [outputMode, setOutputMode] = useState<PromptFormat>(PromptFormat.TEXT);
     const [showAdvanced, setShowAdvanced] = useState(false);
+    const [showMobileResult, setShowMobileResult] = useState(false);
     const { t, settings } = useApp();
 
     // Load initial data (from history)
@@ -59,6 +60,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
             // Pass current language setting to Gemini
             const result = await generateOptimizedPrompt(activeTab, subtype, inputs, settings.language);
             setOutput(result);
+            setShowMobileResult(true);
 
             const title = inputs.topic || inputs.description || inputs.prompt || `Prompt ${new Date().toLocaleTimeString()}`;
             await saveHistory({
@@ -103,21 +105,23 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
     // --- Render Helpers ---
 
     const renderTabs = () => (
-        <div className="flex gap-1 border-b border-border bg-background/50 backdrop-blur-sm sticky top-0 z-10 px-4 pt-2">
+        <div className="flex md:grid md:grid-cols-5 overflow-x-auto md:overflow-visible p-0 bg-surface border-b border-border sticky top-0 z-10 w-full shadow-none no-scrollbar">
             {Object.values(TaskType).map(tab => (
                 <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${activeTab === tab
-                        ? 'border-primary text-primary'
-                        : 'border-transparent text-secondary hover:text-primary hover:border-primary/50'
+                    className={`flex-none md:flex-1 flex items-center justify-center py-4 px-4 md:px-1 text-[11px] font-bold uppercase tracking-wider transition-colors duration-200 border-b-2 min-w-[80px] md:min-w-0 ${activeTab === tab
+                        ? 'border-primary text-primary bg-primary/5'
+                        : 'border-transparent text-secondary hover:text-main hover:bg-black/5 dark:hover:bg-white/5'
                         }`}
                 >
-                    {tab === TaskType.RESEARCH && t('tab.research')}
-                    {tab === TaskType.IMAGE && t('tab.image')}
-                    {tab === TaskType.VIDEO && t('tab.video')}
-                    {tab === TaskType.OUTLINE && t('tab.outline')}
-                    {tab === TaskType.MUSIC && t('tab.music')}
+                    <span className="whitespace-normal text-center leading-tight">
+                        {tab === TaskType.RESEARCH && t('tab.research')}
+                        {tab === TaskType.IMAGE && t('tab.image')}
+                        {tab === TaskType.VIDEO && t('tab.video')}
+                        {tab === TaskType.OUTLINE && t('tab.outline')}
+                        {tab === TaskType.MUSIC && t('tab.music')}
+                    </span>
                 </button>
             ))}
         </div>
@@ -159,9 +163,9 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                 return (
                     <div className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-secondary mb-1">{t('form.topic')}</label>
+                            <label className="block text-sm font-medium text-slate-400 mb-1">{t('form.topic')}</label>
                             <textarea
-                                className="w-full bg-background border border-border rounded-lg p-3 text-main focus:ring-2 focus:ring-primary outline-none"
+                                className="w-full bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-3 text-main dark:text-white focus:ring-2 focus:ring-primary focus:bg-white/50 dark:focus:bg-white/10 outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
                                 rows={4}
                                 value={inputs.topic || ''}
                                 onChange={e => handleInputChange('topic', e.target.value)}
@@ -169,9 +173,9 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-secondary mb-1">{t('form.level')}</label>
+                            <label className="block text-sm font-medium text-slate-400 mb-1">{t('form.level')}</label>
                             <select
-                                className="w-full bg-background border border-border rounded-lg p-3 text-main"
+                                className="w-full bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-3 text-main dark:text-white focus:bg-white/50 dark:focus:bg-white/10 outline-none transition-colors [&>option]:bg-white dark:[&>option]:bg-slate-900 [&>option]:text-main dark:[&>option]:text-white"
                                 value={inputs.depth || 'standard'}
                                 onChange={e => handleInputChange('depth', e.target.value)}
                             >
@@ -180,21 +184,21 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                 <option value="deep">{t('form.level.deep')}</option>
                             </select>
                         </div>
-                        <div className="bg-background/50 p-3 rounded-lg border border-border">
-                            <p className="text-xs font-bold text-secondary mb-2 uppercase">{t('common.advanced')}</p>
-                            <div className="grid grid-cols-2 gap-2">
+                        <div className="bg-white/5 p-4 rounded-xl border border-white/10">
+                            <p className="text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider">{t('common.advanced')}</p>
+                            <div className="grid grid-cols-2 gap-3">
                                 <input
                                     type="text"
                                     placeholder={t('form.timeframe')}
                                     value={inputs.timeframe || ''}
-                                    className="bg-surface border border-border rounded px-2 py-1 text-sm text-main"
+                                    className="bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-lg px-3 py-2 text-sm text-main dark:text-white focus:bg-white/50 dark:focus:bg-white/10 outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
                                     onChange={e => handleInputChange('timeframe', e.target.value)}
                                 />
                                 <input
                                     type="text"
                                     placeholder={t('form.format_output')}
                                     value={inputs.format || ''}
-                                    className="bg-surface border border-border rounded px-2 py-1 text-sm text-main"
+                                    className="bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-lg px-3 py-2 text-sm text-main dark:text-white focus:bg-white/50 dark:focus:bg-white/10 outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
                                     onChange={e => handleInputChange('format', e.target.value)}
                                 />
                             </div>
@@ -206,7 +210,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
             case TaskType.IMAGE:
                 return (
                     <div className="space-y-4">
-                        <div className="flex gap-2 bg-background/50 p-1 rounded-lg">
+                        <div className="flex gap-2 bg-black/20 p-1.5 rounded-xl border border-white/5">
                             {[
                                 { id: 'Generate', label: t('form.img.sub.generate') },
                                 { id: 'Analyze', label: t('form.img.sub.analyze') },
@@ -215,7 +219,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                 <button
                                     key={sub.id}
                                     onClick={() => { setSubtype(sub.id); setInputs({}); }}
-                                    className={`flex-1 py-1.5 text-xs rounded font-medium ${subtype === sub.id ? 'bg-primary text-white' : 'text-secondary hover:text-primary'}`}
+                                    className={`flex-1 py-2 text-xs rounded-lg font-bold transition-all duration-300 ${subtype === sub.id ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
                                 >
                                     {sub.label}
                                 </button>
@@ -234,24 +238,24 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                 {subtype === 'Analyze' && (
                                     <div className="space-y-3">
                                         <FileUpload label={t('form.img.original')} initialValue={inputs.originalImg} onFileSelect={f => handleInputChange('originalImg', f)} />
-                                        <label className="flex items-center gap-2 cursor-pointer bg-background/50 p-2 rounded border border-border">
+                                        <label className="flex items-center gap-3 cursor-pointer bg-white/5 p-3 rounded-xl border border-white/10 hover:bg-white/10 transition-colors">
                                             <input
                                                 type="checkbox"
                                                 checked={inputs.useRefFace || false}
-                                                className="w-4 h-4 rounded bg-surface border-border text-primary focus:ring-primary"
+                                                className="w-5 h-5 rounded-md bg-white/10 border-white/20 text-primary focus:ring-primary focus:ring-offset-0"
                                                 onChange={e => handleInputChange('useRefFace', e.target.checked)}
                                             />
-                                            <span className="text-sm text-secondary">{t('form.img.use_ref_face')}</span>
+                                            <span className="text-sm text-slate-300 font-medium">{t('form.img.use_ref_face')}</span>
                                         </label>
                                     </div>
                                 )}
 
                                 <div>
-                                    <label className="block text-sm font-medium text-secondary mb-1">
+                                    <label className="block text-sm font-medium text-slate-400 mb-1">
                                         {subtype === 'Analyze' ? t('form.img.desc_analyze') : t('form.img.desc_generate')}
                                     </label>
                                     <textarea
-                                        className="w-full bg-background border border-border rounded-lg p-3 text-main"
+                                        className="w-full bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-3 text-main dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white/50 dark:focus:bg-white/10 focus:border-primary/50 outline-none transition-colors"
                                         rows={3}
                                         value={inputs.description || ''}
                                         onChange={e => handleInputChange('description', e.target.value)}
@@ -262,14 +266,14 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                         )}
 
                         <div className="grid grid-cols-2 gap-3">
-                            <select className="bg-background border border-border rounded-lg p-2 text-main text-sm" value={inputs.style || ''} onChange={e => handleInputChange('style', e.target.value)}>
+                            <select className="bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-2.5 text-main dark:text-white text-sm outline-none focus:bg-white/50 dark:focus:bg-white/10 transition-colors [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.style || ''} onChange={e => handleInputChange('style', e.target.value)}>
                                 <option value="">{t('form.img.style')}</option>
                                 <option value="photorealistic">Photorealistic</option>
                                 <option value="anime">Anime</option>
                                 <option value="oil painting">Oil Painting</option>
                                 <option value="3d render">3D Render</option>
                             </select>
-                            <select className="bg-background border border-border rounded-lg p-2 text-main text-sm" value={inputs.ratio || '1:1'} onChange={e => handleInputChange('ratio', e.target.value)}>
+                            <select className="bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-2.5 text-main dark:text-white text-sm outline-none focus:bg-white/50 dark:focus:bg-white/10 transition-colors [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.ratio || '1:1'} onChange={e => handleInputChange('ratio', e.target.value)}>
                                 <option value="1:1">1:1</option>
                                 <option value="16:9">16:9</option>
                                 <option value="9:16">9:16</option>
@@ -277,9 +281,9 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                 <option value="3:4">3:4</option>
                             </select>
                         </div>
-                        <label className="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" checked={inputs.inspire || false} className="w-4 h-4 rounded bg-background border-border text-primary focus:ring-primary" onChange={e => handleInputChange('inspire', e.target.checked)} />
-                            <span className="text-sm text-secondary">{t('form.img.inspire')}</span>
+                        <label className="flex items-center gap-2 cursor-pointer group">
+                            <input type="checkbox" checked={inputs.inspire || false} className="w-4 h-4 rounded bg-white/10 border-white/20 text-primary focus:ring-primary" onChange={e => handleInputChange('inspire', e.target.checked)} />
+                            <span className="text-sm text-slate-400 group-hover:text-white transition-colors">{t('form.img.inspire')}</span>
                         </label>
 
                     </div>
@@ -288,7 +292,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
             case TaskType.VIDEO:
                 return (
                     <div className="space-y-4">
-                        <div className="flex gap-2 bg-background/50 p-1 rounded-lg">
+                        <div className="flex gap-2 bg-black/20 p-1.5 rounded-xl border border-white/5">
                             {[
                                 { id: 'Prompt', label: t('form.vid.sub.prompt') },
                                 { id: 'Img2Video', label: t('form.vid.sub.img2vid') },
@@ -297,7 +301,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                 <button
                                     key={sub.id}
                                     onClick={() => { setSubtype(sub.id); setInputs({}); setShowAdvanced(false); }}
-                                    className={`flex-1 py-1.5 text-xs rounded font-medium ${subtype === sub.id ? 'bg-primary text-white' : 'text-secondary hover:text-primary'}`}
+                                    className={`flex-1 py-2 text-xs rounded-lg font-bold transition-all duration-300 ${subtype === sub.id ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
                                 >
                                     {sub.label}
                                 </button>
@@ -312,18 +316,18 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                         )}
 
                         {subtype === 'Extend' && (
-                            <div className="space-y-3 bg-background/50 p-3 rounded-lg border border-border">
-                                <label className="block text-sm font-medium text-secondary">{t('form.vid.base_prompt')}</label>
+                            <div className="space-y-3 bg-white/5 p-4 rounded-xl border border-white/10">
+                                <label className="block text-sm font-medium text-slate-400">{t('form.vid.base_prompt')}</label>
                                 <textarea
-                                    className="w-full bg-surface border border-border rounded p-2 text-main text-sm"
+                                    className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:bg-white/10 outline-none transition-colors placeholder-slate-500"
                                     rows={3}
                                     value={inputs.basePrompt || ''}
                                     onChange={e => handleInputChange('basePrompt', e.target.value)}
                                     placeholder={t('form.vid.base_prompt_ph')}
                                 />
                                 <label className="flex items-center gap-2 cursor-pointer">
-                                    <input type="checkbox" checked={inputs.keepConsistency !== false} className="w-4 h-4 rounded bg-surface border-border text-primary" onChange={e => handleInputChange('keepConsistency', e.target.checked)} />
-                                    <span className="text-sm text-secondary">{t('form.vid.consistency')}</span>
+                                    <input type="checkbox" checked={inputs.keepConsistency !== false} className="w-4 h-4 rounded bg-white/10 border-white/20 text-primary" onChange={e => handleInputChange('keepConsistency', e.target.checked)} />
+                                    <span className="text-sm text-slate-300">{t('form.vid.consistency')}</span>
                                 </label>
                             </div>
                         )}
@@ -332,9 +336,9 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                         <div className="space-y-3">
                             {subtype === 'Extend' ? (
                                 <div>
-                                    <label className="block text-sm font-medium text-secondary mb-1">{t('form.vid.extend_what')}</label>
+                                    <label className="block text-sm font-medium text-slate-400 mb-1">{t('form.vid.extend_what')}</label>
                                     <textarea
-                                        className="w-full bg-background border border-border rounded-lg p-3 text-main"
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white focus:bg-white/10 outline-none transition-colors placeholder-slate-500"
                                         rows={2}
                                         value={inputs.extensionIdea || ''}
                                         onChange={e => handleInputChange('extensionIdea', e.target.value)}
@@ -344,9 +348,9 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                             ) : (
                                 <>
                                     <div>
-                                        <label className="block text-sm font-medium text-secondary mb-1">{t('form.vid.idea')}</label>
+                                        <label className="block text-sm font-medium text-slate-400 mb-1">{t('form.vid.idea')}</label>
                                         <textarea
-                                            className="w-full bg-background border border-border rounded-lg p-3 text-main"
+                                            className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white focus:bg-white/10 outline-none transition-colors placeholder-slate-500"
                                             rows={2}
                                             value={inputs.description || ''}
                                             onChange={e => handleInputChange('description', e.target.value)}
@@ -357,19 +361,19 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                     {subtype === 'Prompt' && (
                                         <div className="grid grid-cols-2 gap-3">
                                             <div>
-                                                <label className="block text-xs text-secondary mb-1">{t('form.vid.env')}</label>
-                                                <input type="text" placeholder="Cyberpunk city..." className="w-full bg-background border border-border rounded p-2 text-main text-sm" value={inputs.context || ''} onChange={e => handleInputChange('context', e.target.value)} />
+                                                <label className="block text-xs text-slate-400 mb-1">{t('form.vid.env')}</label>
+                                                <input type="text" placeholder="Cyberpunk city..." className="w-full bg-white/5 border border-white/10 rounded-lg p-2.5 text-white text-sm focus:bg-white/10 outline-none transition-colors placeholder-slate-500" value={inputs.context || ''} onChange={e => handleInputChange('context', e.target.value)} />
                                             </div>
                                             <div>
-                                                <label className="block text-xs text-secondary mb-1">{t('form.vid.subject')}</label>
-                                                <input type="text" placeholder="A robot..." className="w-full bg-background border border-border rounded p-2 text-main text-sm" value={inputs.subject || ''} onChange={e => handleInputChange('subject', e.target.value)} />
+                                                <label className="block text-xs text-slate-400 mb-1">{t('form.vid.subject')}</label>
+                                                <input type="text" placeholder="A robot..." className="w-full bg-white/5 border border-white/10 rounded-lg p-2.5 text-white text-sm focus:bg-white/10 outline-none transition-colors placeholder-slate-500" value={inputs.subject || ''} onChange={e => handleInputChange('subject', e.target.value)} />
                                             </div>
                                         </div>
                                     )}
 
                                     <div>
-                                        <label className="block text-xs text-secondary mb-1">{t('form.vid.audio_gen')}</label>
-                                        <input type="text" placeholder="Music, SFX..." className="w-full bg-background border border-border rounded p-2 text-main text-sm" value={inputs.audio_general || ''} onChange={e => handleInputChange('audio_general', e.target.value)} />
+                                        <label className="block text-xs text-slate-400 mb-1">{t('form.vid.audio_gen')}</label>
+                                        <input type="text" placeholder="Music, SFX..." className="w-full bg-white/5 border border-white/10 rounded-lg p-2.5 text-white text-sm focus:bg-white/10 outline-none transition-colors placeholder-slate-500" value={inputs.audio_general || ''} onChange={e => handleInputChange('audio_general', e.target.value)} />
                                     </div>
                                 </>
                             )}
@@ -377,24 +381,24 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                             {/* Technical Configs */}
                             <div className="grid grid-cols-3 gap-2">
                                 <div>
-                                    <label className="block text-[10px] text-secondary mb-1 uppercase">{t('form.vid.duration')}</label>
-                                    <select className="w-full bg-background border border-border rounded p-2 text-main text-sm" value={inputs.duration || '5s'} onChange={e => handleInputChange('duration', e.target.value)}>
+                                    <label className="block text-[10px] text-slate-400 mb-1 uppercase font-bold">{t('form.vid.duration')}</label>
+                                    <select className="w-full bg-white/5 border border-white/10 rounded-lg p-2 text-white text-sm outline-none focus:bg-white/10 [&>option]:bg-slate-900" value={inputs.duration || '5s'} onChange={e => handleInputChange('duration', e.target.value)}>
                                         <option value="5s">5s</option>
                                         <option value="8s">8s</option>
                                         <option value="10s">10s</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-[10px] text-secondary mb-1 uppercase">{t('form.img.ratio')}</label>
-                                    <select className="w-full bg-background border border-border rounded p-2 text-main text-sm" value={inputs.ratio || '16:9'} onChange={e => handleInputChange('ratio', e.target.value)}>
+                                    <label className="block text-[10px] text-slate-400 mb-1 uppercase font-bold">{t('form.img.ratio')}</label>
+                                    <select className="w-full bg-white/5 border border-white/10 rounded-lg p-2 text-white text-sm outline-none focus:bg-white/10 [&>option]:bg-slate-900" value={inputs.ratio || '16:9'} onChange={e => handleInputChange('ratio', e.target.value)}>
                                         <option value="16:9">16:9</option>
                                         <option value="9:16">9:16</option>
                                         <option value="1:1">1:1</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-[10px] text-secondary mb-1 uppercase">{t('form.vid.count')}</label>
-                                    <select className="w-full bg-background border border-border rounded p-2 text-main text-sm" value={inputs.count || '1'} onChange={e => handleInputChange('count', e.target.value)}>
+                                    <label className="block text-[10px] text-slate-400 mb-1 uppercase font-bold">{t('form.vid.count')}</label>
+                                    <select className="w-full bg-white/5 border border-white/10 rounded-lg p-2 text-white text-sm outline-none focus:bg-white/10 [&>option]:bg-slate-900" value={inputs.count || '1'} onChange={e => handleInputChange('count', e.target.value)}>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -405,22 +409,22 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                         </div>
 
                         {/* ADVANCED ACCORDION */}
-                        <div className="border border-border rounded-lg overflow-hidden">
+                        <div className="border border-white/10 rounded-xl overflow-hidden">
                             <button
                                 onClick={() => setShowAdvanced(!showAdvanced)}
-                                className="w-full flex items-center justify-between p-3 bg-background/50 hover:bg-background/80 transition"
+                                className="w-full flex items-center justify-between p-3 bg-white/5 hover:bg-white/10 transition-colors"
                             >
-                                <span className="text-sm font-medium text-secondary">{t('common.advanced')}</span>
-                                <span className="material-symbols-rounded text-secondary transform transition-transform duration-200" style={{ transform: showAdvanced ? 'rotate(180deg)' : 'rotate(0deg)' }}>expand_more</span>
+                                <span className="text-sm font-medium text-slate-300">{t('common.advanced')}</span>
+                                <span className="material-symbols-rounded text-slate-400 transform transition-transform duration-200" style={{ transform: showAdvanced ? 'rotate(180deg)' : 'rotate(0deg)' }}>expand_more</span>
                             </button>
 
                             {showAdvanced && (
-                                <div className="p-3 space-y-3 bg-surface border-t border-border">
+                                <div className="p-4 space-y-4 bg-black/20 border-t border-white/10">
                                     {/* Camera */}
                                     <div className="grid grid-cols-2 gap-3">
                                         <div>
-                                            <label className="block text-xs text-secondary mb-1">{t('form.vid.cam_angle')}</label>
-                                            <select className="w-full bg-background border border-border rounded p-2 text-main text-xs" value={inputs.camera_angle || ''} onChange={e => handleInputChange('camera_angle', e.target.value)}>
+                                            <label className="block text-xs text-slate-400 mb-1">{t('form.vid.cam_angle')}</label>
+                                            <select className="w-full bg-white/5 border border-white/10 rounded-lg p-2 text-white text-xs outline-none [&>option]:bg-slate-900" value={inputs.camera_angle || ''} onChange={e => handleInputChange('camera_angle', e.target.value)}>
                                                 <option value="">Auto</option>
                                                 <option value="wide">Wide</option>
                                                 <option value="medium">Medium</option>
@@ -430,8 +434,8 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                             </select>
                                         </div>
                                         <div>
-                                            <label className="block text-xs text-secondary mb-1">{t('form.vid.cam_motion')}</label>
-                                            <select className="w-full bg-background border border-border rounded p-2 text-main text-xs" value={inputs.camera_motion || ''} onChange={e => handleInputChange('camera_motion', e.target.value)}>
+                                            <label className="block text-xs text-slate-400 mb-1">{t('form.vid.cam_motion')}</label>
+                                            <select className="w-full bg-white/5 border border-white/10 rounded-lg p-2 text-white text-xs outline-none [&>option]:bg-slate-900" value={inputs.camera_motion || ''} onChange={e => handleInputChange('camera_motion', e.target.value)}>
                                                 <option value="">Auto</option>
                                                 <option value="static">Static</option>
                                                 <option value="pan_left">Pan Left</option>
@@ -444,18 +448,18 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                     </div>
 
                                     <div className="grid grid-cols-2 gap-3">
-                                        <input type="text" placeholder={t('form.vid.lighting')} className="bg-background border border-border rounded p-2 text-main text-xs" value={inputs.lighting || ''} onChange={e => handleInputChange('lighting', e.target.value)} />
-                                        <input type="text" placeholder={t('form.img.style')} className="bg-background border border-border rounded p-2 text-main text-xs" value={inputs.style || ''} onChange={e => handleInputChange('style', e.target.value)} />
+                                        <input type="text" placeholder={t('form.vid.lighting')} className="bg-white/5 border border-white/10 rounded-lg p-2 text-white text-xs outline-none focus:bg-white/10 placeholder-slate-500" value={inputs.lighting || ''} onChange={e => handleInputChange('lighting', e.target.value)} />
+                                        <input type="text" placeholder={t('form.img.style')} className="bg-white/5 border border-white/10 rounded-lg p-2 text-white text-xs outline-none focus:bg-white/10 placeholder-slate-500" value={inputs.style || ''} onChange={e => handleInputChange('style', e.target.value)} />
                                     </div>
 
                                     <div>
-                                        <label className="block text-xs text-secondary mb-1">{t('form.vid.audio_det')}</label>
-                                        <textarea className="w-full bg-background border border-border rounded p-2 text-main text-xs" rows={2} value={inputs.audio_detailed || ''} onChange={e => handleInputChange('audio_detailed', e.target.value)} />
+                                        <label className="block text-xs text-slate-400 mb-1">{t('form.vid.audio_det')}</label>
+                                        <textarea className="w-full bg-white/5 border border-white/10 rounded-lg p-2 text-white text-xs outline-none focus:bg-white/10" rows={2} value={inputs.audio_detailed || ''} onChange={e => handleInputChange('audio_detailed', e.target.value)} />
                                     </div>
 
                                     <div>
-                                        <label className="block text-xs text-secondary mb-1">{t('form.vid.negative')}</label>
-                                        <input type="text" className="w-full bg-background border border-border rounded p-2 text-main text-xs" value={inputs.negative || ''} onChange={e => handleInputChange('negative', e.target.value)} />
+                                        <label className="block text-xs text-slate-400 mb-1">{t('form.vid.negative')}</label>
+                                        <input type="text" className="w-full bg-white/5 border border-white/10 rounded-lg p-2 text-white text-xs outline-none focus:bg-white/10" value={inputs.negative || ''} onChange={e => handleInputChange('negative', e.target.value)} />
                                     </div>
                                 </div>
                             )}
@@ -469,9 +473,9 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                 return (
                     <div className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-secondary mb-1">{t('form.outline.topic')}</label>
+                            <label className="block text-sm font-medium text-slate-400 mb-1">{t('form.outline.topic')}</label>
                             <textarea
-                                className="w-full bg-background border border-border rounded-lg p-3 text-main"
+                                className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white focus:bg-white/10 focus:ring-primary outline-none transition-colors placeholder-slate-500"
                                 rows={3}
                                 value={inputs.topic || ''}
                                 onChange={e => handleInputChange('topic', e.target.value)}
@@ -479,12 +483,12 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                             />
                         </div>
                         <div className="grid grid-cols-2 gap-3">
-                            <input type="text" placeholder={t('form.outline.audience')} value={inputs.audience || ''} className="bg-background border border-border rounded-lg p-2 text-main text-sm" onChange={e => handleInputChange('audience', e.target.value)} />
-                            <input type="text" placeholder={t('form.outline.goal')} value={inputs.goal || ''} className="bg-background border border-border rounded-lg p-2 text-main text-sm" onChange={e => handleInputChange('goal', e.target.value)} />
+                            <input type="text" placeholder={t('form.outline.audience')} value={inputs.audience || ''} className="bg-white/5 border border-white/10 rounded-lg p-2.5 text-white text-sm placeholder-slate-500 focus:bg-white/10 outline-none" onChange={e => handleInputChange('audience', e.target.value)} />
+                            <input type="text" placeholder={t('form.outline.goal')} value={inputs.goal || ''} className="bg-white/5 border border-white/10 rounded-lg p-2.5 text-white text-sm placeholder-slate-500 focus:bg-white/10 outline-none" onChange={e => handleInputChange('goal', e.target.value)} />
                         </div>
-                        <label className="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" checked={inputs.auto_fill || false} className="w-4 h-4 rounded bg-background border-border text-primary focus:ring-primary" onChange={e => handleInputChange('auto_fill', e.target.checked)} />
-                            <span className="text-sm text-secondary">{t('form.outline.autofill')}</span>
+                        <label className="flex items-center gap-2 cursor-pointer group">
+                            <input type="checkbox" checked={inputs.auto_fill || false} className="w-4 h-4 rounded bg-white/10 border-white/20 text-primary focus:ring-primary" onChange={e => handleInputChange('auto_fill', e.target.checked)} />
+                            <span className="text-sm text-slate-400 group-hover:text-white transition-colors">{t('form.outline.autofill')}</span>
                         </label>
 
                     </div>
@@ -494,9 +498,9 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                 return (
                     <div className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-secondary mb-1">{t('form.music.topic')}</label>
+                            <label className="block text-sm font-medium text-slate-400 mb-1">{t('form.music.topic')}</label>
                             <textarea
-                                className="w-full bg-background border border-border rounded-lg p-3 text-main"
+                                className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white focus:bg-white/10 outline-none transition-colors placeholder-slate-500"
                                 rows={3}
                                 value={inputs.topic || ''}
                                 onChange={e => handleInputChange('topic', e.target.value)}
@@ -504,12 +508,12 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                             />
                         </div>
                         <div className="grid grid-cols-2 gap-3">
-                            <input type="text" placeholder={t('form.music.genre')} value={inputs.genre || ''} className="bg-background border border-border rounded-lg p-2 text-main text-sm" onChange={e => handleInputChange('genre', e.target.value)} />
-                            <input type="text" placeholder={t('form.music.mood')} value={inputs.mood || ''} className="bg-background border border-border rounded-lg p-2 text-main text-sm" onChange={e => handleInputChange('mood', e.target.value)} />
+                            <input type="text" placeholder={t('form.music.genre')} value={inputs.genre || ''} className="bg-white/5 border border-white/10 rounded-lg p-2.5 text-white text-sm placeholder-slate-500 focus:bg-white/10 outline-none" onChange={e => handleInputChange('genre', e.target.value)} />
+                            <input type="text" placeholder={t('form.music.mood')} value={inputs.mood || ''} className="bg-white/5 border border-white/10 rounded-lg p-2.5 text-white text-sm placeholder-slate-500 focus:bg-white/10 outline-none" onChange={e => handleInputChange('mood', e.target.value)} />
                         </div>
-                        <label className="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" checked={inputs.suno_ready || false} className="w-4 h-4 rounded bg-background border-border text-primary focus:ring-primary" onChange={e => handleInputChange('suno_ready', e.target.checked)} />
-                            <span className="text-sm text-secondary">{t('form.music.suno')}</span>
+                        <label className="flex items-center gap-2 cursor-pointer group">
+                            <input type="checkbox" checked={inputs.suno_ready || false} className="w-4 h-4 rounded bg-white/10 border-white/20 text-primary focus:ring-primary" onChange={e => handleInputChange('suno_ready', e.target.checked)} />
+                            <span className="text-sm text-slate-400 group-hover:text-white transition-colors">{t('form.music.suno')}</span>
                         </label>
 
                     </div>
@@ -523,9 +527,11 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
     const renderOutput = () => {
         if (!output) {
             return (
-                <div className="h-full flex items-center justify-center text-secondary flex-col gap-4">
-                    <span className="material-symbols-rounded text-6xl opacity-20">auto_awesome</span>
-                    <p>{t('workspace.empty_state')}</p>
+                <div className="h-full flex items-center justify-center text-slate-500/50 flex-col gap-6">
+                    <div className="p-8 rounded-full bg-white/5 animate-pulse-glow">
+                        <span className="material-symbols-rounded text-6xl opacity-50 text-primary">auto_awesome</span>
+                    </div>
+                    <p className="text-lg font-medium text-slate-400">{t('workspace.empty_state')}</p>
                 </div>
             );
         }
@@ -534,154 +540,214 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
         const isMultiVideo = activeTab === TaskType.VIDEO && output.final_prompt_json && output.final_prompt_json.anchors && Array.isArray(output.final_prompt_json.prompts);
 
         return (
-            <div className="flex flex-col h-full overflow-hidden">
-                <div className="flex items-center justify-between border-b border-border pb-2 mb-4 shrink-0">
-                    <div className="flex gap-2">
-                        <button
-                            onClick={() => setOutputMode(PromptFormat.TEXT)}
-                            className={`px-3 py-1 text-xs rounded-full font-medium ${outputMode === PromptFormat.TEXT ? 'bg-primary text-white' : 'text-secondary hover:text-primary'}`}
-                        >
-                            Text
+            <div className="flex flex-col h-full overflow-hidden relative group">
+                <div className="absolute top-0 right-0 p-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10 bg-gradient-to-l from-black/80 to-transparent">
+                    <button
+                        onClick={() => setOutputMode(PromptFormat.TEXT)}
+                        className={`px-3 py-1 text-xs rounded-full font-bold backdrop-blur-md border border-white/10 transition-colors ${outputMode === PromptFormat.TEXT ? 'bg-primary text-white' : 'bg-black/40 text-slate-400 hover:text-white'}`}
+                    >
+                        Text
+                    </button>
+                    <button
+                        onClick={() => setOutputMode(PromptFormat.JSON)}
+                        className={`px-3 py-1 text-xs rounded-full font-bold backdrop-blur-md border border-white/10 transition-colors ${outputMode === PromptFormat.JSON ? 'bg-primary text-white' : 'bg-black/40 text-slate-400 hover:text-white'}`}
+                    >
+                        JSON
+                    </button>
+                    {/* Extend Button for Video (N=1) */}
+                    {activeTab === TaskType.VIDEO && subtype !== 'Extend' && !isMultiVideo && (
+                        <button onClick={() => handleExtendVideo(output.final_prompt_text)} className="flex items-center gap-1 text-accent hover:text-white text-xs font-bold px-3 py-1 rounded-full bg-accent/20 border border-accent/30 hover:bg-accent/40 transition-colors backdrop-blur-md">
+                            <span className="material-symbols-rounded text-sm">fast_forward</span> Extend
                         </button>
-                        <button
-                            onClick={() => setOutputMode(PromptFormat.JSON)}
-                            className={`px-3 py-1 text-xs rounded-full font-medium ${outputMode === PromptFormat.JSON ? 'bg-primary text-white' : 'text-secondary hover:text-primary'}`}
-                        >
-                            JSON
-                        </button>
-                    </div>
-                    <div className="flex gap-2">
-                        {/* Extend Button for Video (N=1) */}
-                        {activeTab === TaskType.VIDEO && subtype !== 'Extend' && !isMultiVideo && (
-                            <button onClick={() => handleExtendVideo(output.final_prompt_text)} className="flex items-center gap-1 text-accent hover:text-main text-xs font-bold px-2 py-1 rounded bg-accent/10 border border-accent/20">
-                                <span className="material-symbols-rounded text-sm">fast_forward</span> Extend
-                            </button>
-                        )}
-                        <button
-                            onClick={() => copyToClipboard(outputMode === PromptFormat.TEXT ? output.final_prompt_text : JSON.stringify(output.final_prompt_json || output, null, 2))}
-                            className="text-secondary hover:text-primary"
-                            title={t('common.copy')}
-                        >
-                            <span className="material-symbols-rounded">content_copy</span>
-                        </button>
-                        <button className="text-secondary hover:text-primary" title={t('common.download')}>
-                            <span className="material-symbols-rounded">download</span>
-                        </button>
-                    </div>
+                    )}
+                    <button
+                        onClick={() => copyToClipboard(outputMode === PromptFormat.TEXT ? output.final_prompt_text : JSON.stringify(output.final_prompt_json || output, null, 2))}
+                        className="bg-black/40 text-slate-400 hover:text-white p-1.5 rounded-full backdrop-blur-md border border-white/10 transition-colors"
+                        title={t('common.copy')}
+                    >
+                        <span className="material-symbols-rounded text-sm">content_copy</span>
+                    </button>
+                    <button className="bg-black/40 text-slate-400 hover:text-white p-1.5 rounded-full backdrop-blur-md border border-white/10 transition-colors" title={t('common.download')}>
+                        <span className="material-symbols-rounded text-sm">download</span>
+                    </button>
                 </div>
 
-                <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
-                    {outputMode === PromptFormat.TEXT ? (
-                        <div className="space-y-6">
-                            {/* Highlight AI Assumptions */}
-                            {output.assumptions && output.assumptions.length > 0 && (
-                                <div className="bg-accent/10 border border-accent/20 rounded-lg p-3">
-                                    <p className="text-accent text-xs font-bold uppercase mb-2 flex items-center gap-1">
-                                        <span className="material-symbols-rounded text-sm">lightbulb</span> {t('workspace.ai_assumptions')}
-                                    </p>
-                                    <ul className="list-disc list-inside text-sm text-secondary space-y-1">
-                                        {output.assumptions.map((a, i) => (
-                                            <li key={i}>{a.value}</li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            )}
 
-                            {isMultiVideo ? (
-                                <div className="space-y-6">
-                                    <div className="bg-blue-900/10 border border-blue-800/30 rounded-lg p-4">
-                                        <h3 className="text-primary font-bold text-sm uppercase mb-2">⚓ {t('workspace.anchors')}</h3>
-                                        <p className="text-main/80 text-sm whitespace-pre-wrap">{output.final_prompt_json.anchors}</p>
-                                        <button onClick={() => copyToClipboard(output.final_prompt_json.anchors)} className="mt-2 text-xs text-primary hover:text-main underline">{t('common.copy')}</button>
+                <div className="flex-1 overflow-y-auto custom-scrollbar p-0">
+                    <div className="space-y-6 p-6">
+                        {outputMode === PromptFormat.TEXT ? (
+                            <div className="space-y-6">
+                                {/* Highlight AI Assumptions */}
+                                {output.assumptions && output.assumptions.length > 0 && (
+                                    <div className="bg-accent/10 border border-accent/20 rounded-xl p-4 relative overflow-hidden">
+                                        <div className="absolute top-0 left-0 w-1 h-full bg-accent"></div>
+                                        <p className="text-accent text-xs font-bold uppercase mb-2 flex items-center gap-2">
+                                            <span className="material-symbols-rounded text-sm">lightbulb</span> {t('workspace.ai_assumptions')}
+                                        </p>
+                                        <ul className="list-disc list-inside text-sm text-slate-300 space-y-1">
+                                            {output.assumptions.map((a, i) => (
+                                                <li key={i}>{a.value}</li>
+                                            ))}
+                                        </ul>
                                     </div>
+                                )}
 
-                                    {output.final_prompt_json.prompts.map((p: any, idx: number) => (
-                                        <div key={idx} className="bg-background border border-border rounded-lg p-4">
-                                            <div className="flex justify-between items-center mb-2">
-                                                <span className="text-xs font-bold text-secondary uppercase">{t('workspace.clip')} #{idx + 1}</span>
-                                                <button onClick={() => copyToClipboard(JSON.stringify(p))} className="text-xs text-secondary hover:text-primary">{t('common.copy')}</button>
-                                            </div>
-                                            <div className="space-y-2">
-                                                <div><span className="text-secondary text-xs uppercase">{t('workspace.visual')}:</span> <span className="text-main/80 text-sm">{p.visual || p.visual_prompt}</span></div>
-                                                <div><span className="text-secondary text-xs uppercase">{t('workspace.audio')}:</span> <span className="text-main/80 text-sm">{p.audio || p.audio_prompt}</span></div>
-                                                {p.notes && <div><span className="text-secondary text-xs uppercase">{t('workspace.notes')}:</span> <span className="text-accent text-xs italic">{p.notes}</span></div>}
-                                            </div>
+                                {isMultiVideo ? (
+                                    <div className="space-y-6">
+                                        <div className="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+                                            <h3 className="text-blue-400 font-bold text-sm uppercase mb-3 flex items-center gap-2">
+                                                <span className="material-symbols-rounded">anchor</span>
+                                                {t('workspace.anchors')}
+                                            </h3>
+                                            <p className="text-slate-300 text-sm whitespace-pre-wrap leading-relaxed">{output.final_prompt_json.anchors}</p>
                                         </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                /* Highlight Fields Standard */
-                                <div className="bg-background rounded-lg p-4 font-mono text-sm leading-relaxed whitespace-pre-wrap border border-border">
-                                    {(output.final_prompt_text || '').split('\n').map((line, i) => {
-                                        const isHeader = /^[A-Z\s]+:/.test(line);
-                                        return (
-                                            <div key={i} className={isHeader ? "text-primary font-bold mt-4" : "text-main/80"}>
-                                                {line}
+
+                                        {output.final_prompt_json.prompts.map((p: any, idx: number) => (
+                                            <div key={idx} className="bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-colors">
+                                                <div className="flex justify-between items-center mb-4">
+                                                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">{t('workspace.clip')} {String(idx + 1).padStart(2, '0')}</span>
+                                                    <button onClick={() => copyToClipboard(JSON.stringify(p))} className="text-xs text-slate-500 hover:text-white transition-colors">{t('common.copy')}</button>
+                                                </div>
+                                                <div className="space-y-4">
+                                                    <div><span className="text-slate-500 text-xs uppercase font-bold block mb-1">{t('workspace.visual')}</span> <span className="text-slate-200 text-sm">{p.visual || p.visual_prompt}</span></div>
+                                                    <div><span className="text-slate-500 text-xs uppercase font-bold block mb-1">{t('workspace.audio')}</span> <span className="text-slate-200 text-sm">{p.audio || p.audio_prompt}</span></div>
+                                                    {p.notes && <div><span className="text-slate-500 text-xs uppercase font-bold block mb-1">{t('workspace.notes')}</span> <span className="text-accent text-xs italic">{p.notes}</span></div>}
+                                                </div>
                                             </div>
-                                        );
-                                    })}
-                                </div>
-                            )}
-                        </div>
-                    ) : (
-                        <pre className="bg-background p-4 rounded-lg text-xs font-mono text-main/80 overflow-x-auto border border-border">
-                            {JSON.stringify(output.final_prompt_json || { prompt: output.final_prompt_text }, null, 2)}
-                        </pre>
-                    )}
+                                        ))}
+                                    </div>
+                                ) : (
+                                    /* Highlight Fields Standard */
+                                    <div className="font-mono text-sm leading-relaxed whitespace-pre-wrap text-slate-300">
+                                        {(output.final_prompt_text || '').split('\n').map((line, i) => {
+                                            const isHeader = /^[A-Z\s]+:/.test(line);
+                                            return (
+                                                <div key={i} className={isHeader ? "text-primary font-bold mt-6 text-base border-b border-primary/20 pb-1 mb-2 inline-block" : "text-slate-200 pl-4 border-l-2 border-slate-700/50 hover:border-slate-500/50 transition-colors"}>
+                                                    {line}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            <pre className="p-6 text-xs font-mono text-emerald-400 overflow-x-auto leading-relaxed">
+                                {JSON.stringify(output.final_prompt_json || { prompt: output.final_prompt_text }, null, 2)}
+                            </pre>
+                        )}
+                    </div>
                 </div>
             </div>
         );
     };
 
     return (
-        <div className="flex flex-col md:flex-row h-full">
+        <div className="flex flex-col md:flex-row h-[100dvh] w-full overflow-hidden gap-0 md:gap-6 md:p-0 bg-background/50 md:bg-transparent">
             {/* Tabs - Mobile only */}
-            <div className="md:hidden">
+            <div className="md:hidden shrink-0 bg-surface z-20">
                 {renderTabs()}
             </div>
 
             {/* Main Layout: Left Output (Desktop) / Right Form */}
 
-            {/* Output Area */}
-            <div className="flex-1 bg-background p-4 md:p-6 order-2 md:order-1 border-r border-border overflow-hidden h-1/2 md:h-full flex flex-col">
+            {/* Output Area - The "Canvas" */}
+            <div className="hidden md:block flex-1 bg-white/80 dark:bg-[#050b14]/80 backdrop-blur-2xl rounded-none md:rounded-l-lg border-r border-border dark:border-white/5 order-2 md:order-1 overflow-hidden shadow-2xl relative">
+                <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-transparent pointer-events-none"></div>
                 {renderOutput()}
             </div>
 
-            {/* Input Form Area */}
-            <div className="w-full md:w-[480px] bg-surface p-4 md:p-6 order-1 md:order-2 overflow-y-auto border-b md:border-b-0 border-border flex flex-col h-1/2 md:h-full shrink-0 shadow-lg z-10">
-                <div className="hidden md:block mb-4">
+            {/* Input Form Area - The "Control Panel" */}
+            {/* Input Form Area - The "Control Panel" */}
+            {/* Input Form Area - The "Control Panel" */}
+            <div className="w-full md:w-[450px] bg-surface/50 backdrop-blur-xl border-l border-white/5 order-1 md:order-2 flex flex-col flex-1 min-h-0 md:h-full shadow-glass z-20 rounded-none md:rounded-r-lg overflow-hidden border-b border-border md:border-b-0 relative">
+                <div className="hidden md:block">
                     {renderTabs()}
                 </div>
 
-                <div className="flex-1">
+                <div className="flex-1 overflow-y-auto px-6 pb-6 pt-6 custom-scrollbar">
                     {renderForm()}
                 </div>
 
-                <div className="pt-4 mt-auto border-t border-border flex gap-2 sticky bottom-0 bg-surface">
+                <div className="p-4 md:p-6 border-t border-border dark:border-white/10 bg-white/80 dark:bg-black/20 backdrop-blur-md flex gap-3 sticky bottom-0 z-30 pb-[env(safe-area-inset-bottom)] md:pb-6">
                     <button
                         onClick={() => { setInputs({}); setOutput(null); }}
-                        className="px-4 py-2 rounded-lg border border-border text-secondary hover:bg-background hover:text-primary transition"
+                        className="px-4 py-3 rounded-xl border border-black/5 dark:border-white/10 text-secondary hover:text-main dark:text-slate-400 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-200"
+                        title={t('common.reset')}
                     >
-                        {t('common.reset')}
+                        <span className="material-symbols-rounded">restart_alt</span>
                     </button>
                     <button
                         onClick={handleGenerate}
                         disabled={loading}
-                        className="flex-1 bg-primary hover:bg-blue-600 text-white font-semibold py-2 rounded-lg transition flex items-center justify-center gap-2 disabled:opacity-50 shadow-md"
+                        className="flex-1 bg-gradient-to-r from-primary to-purple-600 hover:from-primary-hover hover:to-purple-700 text-white font-bold py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-neon group"
                     >
                         {loading ? (
                             <>
-                                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                                {t('common.creating')}
+                                <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                                <span className="animate-pulse">{t('common.creating')}...</span>
                             </>
                         ) : (
                             <>
-                                <span className="material-symbols-rounded">auto_awesome</span>
+                                <span className="material-symbols-rounded group-hover:rotate-12 transition-transform">auto_awesome</span>
                                 {t('common.create')}
                             </>
                         )}
                     </button>
                 </div>
+                {/* Mobile Result Modal */}
+                {showMobileResult && output && (
+                    <div className="fixed inset-0 z-[60] bg-white/95 dark:bg-[#050b14]/95 backdrop-blur-3xl md:hidden flex flex-col animate-in fade-in zoom-in duration-300">
+                        <div className="flex justify-end p-6">
+                            <button onClick={() => setShowMobileResult(false)} className="p-2 rounded-full bg-slate-100 dark:bg-surface border border-slate-200 dark:border-border text-slate-500 hover:text-slate-900 dark:text-secondary dark:hover:text-white transition-colors">
+                                <span className="material-symbols-rounded text-2xl">close</span>
+                            </button>
+                        </div>
+
+                        <div className="flex-1 flex flex-col items-center justify-center p-8 space-y-8 text-center max-w-sm mx-auto">
+                            <div className="relative">
+                                <div className="absolute inset-0 bg-primary blur-3xl opacity-20 rounded-full"></div>
+                                <div className="p-6 rounded-full bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-500/20 dark:to-emerald-500/20 text-green-600 dark:text-green-400 border border-green-200 dark:border-green-500/30 shadow-2xl shadow-green-500/10 dark:shadow-green-500/20 relative animate-pulse-glow">
+                                    <span className="material-symbols-rounded text-6xl drop-shadow-md">check_circle</span>
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <h3 className="text-3xl font-bold text-slate-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-white dark:to-slate-400">{t('workspace.generated')}</h3>
+                                <p className="text-base text-slate-500 dark:text-slate-400">{t('workspace.ready_to_copy')}</p>
+                            </div>
+
+                            <div className="w-full space-y-4">
+                                {/* Format Toggle */}
+                                <div className="grid grid-cols-2 p-1 rounded-2xl bg-slate-100 dark:bg-black/40 border border-slate-200 dark:border-white/10">
+                                    <button
+                                        onClick={() => setOutputMode(PromptFormat.TEXT)}
+                                        className={`py-3 rounded-xl text-sm font-bold transition-all duration-300 ${outputMode === PromptFormat.TEXT ? 'bg-white dark:bg-primary text-primary dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
+                                    >
+                                        Text Mode
+                                    </button>
+                                    <button
+                                        onClick={() => setOutputMode(PromptFormat.JSON)}
+                                        className={`py-3 rounded-xl text-sm font-bold transition-all duration-300 ${outputMode === PromptFormat.JSON ? 'bg-white dark:bg-primary text-primary dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
+                                    >
+                                        JSON Mode
+                                    </button>
+                                </div>
+
+                                {/* Copy Button */}
+                                <button
+                                    onClick={() => {
+                                        copyToClipboard(outputMode === PromptFormat.TEXT ? output.final_prompt_text : JSON.stringify(output.final_prompt_json || output, null, 2));
+                                    }}
+                                    className="w-full bg-slate-900 dark:bg-gradient-to-r dark:from-white dark:to-slate-300 hover:bg-black dark:hover:from-slate-100 dark:hover:to-slate-400 text-white dark:text-black font-bold text-lg py-5 rounded-2xl shadow-xl shadow-black/10 dark:shadow-white/5 hover:shadow-black/20 dark:hover:shadow-white/20 transition-all active:scale-95 flex items-center justify-center gap-3 relative overflow-hidden group"
+                                >
+                                    <span className="absolute inset-0 bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                                    <span className="material-symbols-rounded text-2xl">content_copy</span>
+                                    {t('common.copy')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
