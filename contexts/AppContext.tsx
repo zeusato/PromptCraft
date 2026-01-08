@@ -13,7 +13,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [settings, setSettings] = useState<AppSettings>({
-    theme: 'dark',
+    theme: 'light',
     language: AppLanguage.VI,
     defaultOutput: PromptFormat.TEXT,
     highlightAI: true

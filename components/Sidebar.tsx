@@ -46,9 +46,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         {/* Logo Area */}
         <div className="p-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-gradient-to-br from-primary to-purple-600 rounded-xl shadow-lg shadow-primary/20">
-              <span className="material-symbols-rounded text-white text-xl">auto_awesome</span>
-            </div>
+            <img src="/favicon.png" alt="Logo" className="w-10 h-10 rounded-xl shadow-lg shadow-primary/20" />
             <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600 dark:from-white dark:to-slate-400 font-heading tracking-tight">
               PromptCraft
             </span>
