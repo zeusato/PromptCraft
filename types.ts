@@ -3,7 +3,11 @@ export enum TaskType {
   IMAGE = 'IMAGE',
   VIDEO = 'VIDEO',
   OUTLINE = 'OUTLINE',
-  MUSIC = 'MUSIC'
+  MUSIC = 'MUSIC',
+  CODING = 'CODING',
+  WRITING = 'WRITING',
+  MARKETING = 'MARKETING',
+  DATA = 'DATA'
 }
 
 export enum PromptFormat {
@@ -50,4 +54,40 @@ export interface AppSettings {
   language: AppLanguage;
   defaultOutput: PromptFormat;
   highlightAI: boolean;
+  favorites?: string[]; // IDs of favorite prompt templates
+}
+
+// Prompt Libs Mode
+export enum AppMode {
+  CRAFT = 'CRAFT',
+  LIBS = 'LIBS'
+}
+
+export interface PromptVariableOption {
+  value: string;
+  label: string;
+  labelEn: string;
+}
+
+export interface PromptVariable {
+  key: string;
+  label: string;
+  labelEn: string;
+  type: 'text' | 'select' | 'textarea' | 'number';
+  options?: PromptVariableOption[];
+  placeholder?: string;
+  placeholderEn?: string;
+  default?: string;
+}
+
+export interface PromptTemplate {
+  id: string;
+  title: string;
+  titleEn: string;
+  icon: string;
+  category: TaskType;
+  description: string;
+  descriptionEn: string;
+  template: string;
+  variables: PromptVariable[];
 }

@@ -31,10 +31,10 @@
     /* Gray 950 */
     --c-surface: 15 23 42;
     /* Slate 900 */
-    --c-primary: 99 102 241;
-    /* Indigo 500 */
-    --c-primary-hover: 79 70 229;
-    /* Indigo 600 */
+    --c-primary: 255 95 31;
+    /* Neon Orange */
+    --c-primary-hover: 234 88 12;
+    /* Orange 600 */
     --c-secondary: 148 163 184;
     /* Slate 400 */
     --c-accent: 6 182 212;

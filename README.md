@@ -1,79 +1,75 @@
-# PromptCraft - Professional AI Prompt Studio
+# PromptCraft - Studio Sáng Tạo Prompt AI Chuyên Nghiệp
 
-**PromptCraft** is an advanced prompt engineering tool designed to help creators, developers, and researchers generate high-quality, optimized prompts for various AI models. Built with a focus on bilingual support (English/Vietnamese) and a premium user experience.
+**PromptCraft** là công cụ kỹ thuật prompt (prompt engineering) tiên tiến, được thiết kế để giúp các nhà sáng tạo nội dung, lập trình viên và nhà nghiên cứu tạo ra các prompt chất lượng cao, tối ưu hóa cho nhiều mô hình AI khác nhau.
 
 ![PromptCraft UI](public/og-image.png)
 
-## 🚀 Key Features
+## 🚀 Tính Năng Nổi Bật
 
-*   **Bilingual Intelligence**: Automatically generates prompts in **English** (optimized for AI models like Midjourney, Stable Diffusion, GPT-4) and provides a **Vietnamese** translation for user understanding.
-*   **Multi-Domain Support**: Specialized modes for:
-    *   **Research**: Deep dive topics, summarize papers, and structure complex queries.
-    *   **Image Generation**: Crafted styles, lighting, and camera settings for generative art.
-    *   **Video**: Scripts, storyboards, and scene descriptions.
-    *   **Outline**: Structural planning for essays, blogs, and reports.
-    *   **Music**: Composition details, instruments, and mood settings.
-*   **Smart History**: Automatically saves your generations locally. Search, filter, and revisit your past ideas instantly.
-*   **Premium UI/UX**:
-    *   **Glassmorphism Design**: Modern, clean aesthetic with transparency effects.
-    *   **Light/Dark Mode**: Fully responsive theming with optimized contrast for all lighting conditions.
-    *   **Mobile Optimized**: Native-app feel on mobile devices with PWA support.
-*   **Safety & Privacy**: Built on Google's Gemini Flash, ensuring high speed and safe content filtering.
+*   **Chế Độ Kép (Dual Modes):**
+    *   **Craft Mode:** Tự do sáng tạo prompt với sự hỗ trợ của AI cho các tác vụ Research, Coding, Writing...
+    *   **Prompt Libs (Thư Viện):** Kho mẫu prompt chuyên nghiệp có sẵn, chỉ cần điền biến số là dùng ngay.
+*   **Đa Lĩnh Vực:** Hỗ trợ chuyên sâu cho:
+    *   **Research & Data (Mới):** Phân tích dữ liệu, báo cáo thị trường, dịch thuật, tổng hợp tin tức.
+    *   **Marketing (Mới):** Viết content viral, email marketing, kịch bản xử lý từ chối, kế hoạch ra mắt sản phẩm.
+    *   **Coding:** Tạo code, debug, refactor, viết unit test.
+    *   **Writing & Content:** Viết blog, tiểu luận, email, tóm tắt văn bản theo tone giọng.
+    *   **Image & Video:** Tạo prompt chi tiết cho Midjourney, Stable Diffusion, Runway Gen-2.
+*   **Output Chuẩn JSON (Mới):** Tự động cấu trúc prompt thành format JSON sạch, tách biệt các trường (Role, Context, Task...), loại bỏ ký tự thừa, dễ dàng tích hợp vào code hoặc API.
+*   **Hỗ Trợ Song Ngữ:** Tự động tạo prompt tiếng Anh (ngôn ngữ tối ưu cho LLM) nhưng giao diện và giải thích hoàn toàn bằng tiếng Việt.
+*   **Giao Diện Premium:** Thiết kế Glassmorphism hiện đại, hỗ trợ Dark/Light mode, tối ưu cho cả Mobile (PWA).
+*   **Bảo Mật & Riêng Tư:** Sử dụng Google Gemini Flash API tốc độ cao, lưu trữ lịch sử ngay trên trình duyệt (Local Storage/IndexedDB), không lưu data lên server lạ.
 
-## 🛠 Tech Stack
+## 🛠 Công Nghệ Sử Dụng
 
 *   **Frontend**: [React 19](https://react.dev/), [Vite](https://vitejs.dev/)
 *   **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 *   **AI Engine**: [Google Generative AI SDK](https://www.npmjs.com/package/@google/genai) (Gemini Models)
-*   **Storage**: IndexedDB (via `idb`) for local history persistence.
+*   **Markdown**: `react-markdown` để hiển thị prompt đẹp mắt.
+*   **Lưu trữ**: IndexedDB (qua thư viện `idb`) cho lịch sử local.
 *   **Icons**: Material Symbols Rounded.
 
-## 🚦 Getting Started
+## 🚦 Cài Đặt & Chạy Local
 
-Follow these steps to run the project locally.
+Làm theo các bước sau để chạy dự án trên máy của bạn:
 
-### Prerequisites
+### Yêu cầu
+*   Node.js (v18 trở lên)
+*   npm hoặc yarn
 
-*   Node.js (v18 or higher)
-*   npm or yarn
-
-### Installation
-
-1.  **Clone the repository**
+### Các bước
+1.  **Clone dự án**
     ```bash
     git clone https://github.com/zeusato/PromptCraft.git
-    cd promptcraft-vn
+    cd PromptCraft
     ```
 
-2.  **Install dependencies**
+2.  **Cài đặt dependencies**
     ```bash
     npm install
     ```
 
-3.  **Configure Environment**
-    Create a `.env` or `.env.local` file in the root directory and add your Google Gemini API Key:
+3.  **Cấu hình Environment**
+    Tạo file `.env` ở thư mục gốc và thêm API Key Google Gemini của bạn:
     ```env
     VITE_GEMINI_API_KEY=your_api_key_here
     ```
 
-4.  **Run Development Server**
+4.  **Chạy server development**
     ```bash
     npm run dev
     ```
+    Truy cập `http://localhost:5173` để trải nghiệm.
 
-    The app will start at `http://localhost:5173`.
+## 📱 Build Production
 
-## 📱 Build for Production
-
-To create a production-ready build:
-
+Để tạo bản build tối ưu cho production:
 ```bash
 npm run build
 ```
 
 ## 📄 License
-
-This project is licensed under the MIT License.
+Dự án được phát hành dưới giấy phép MIT.
 
 ---
-*Created by [Quyetnm](https://github.com/zeusato)*
+*Phát triển bởi [Quyetnm](https://github.com/zeusato)*
