@@ -49,8 +49,8 @@ const App: React.FC = () => {
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-background dark:bg-cosmic-gradient relative transition-colors duration-300">
-      {/* Background decoration */}
-      <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-0 dark:opacity-20 pointer-events-none mix-blend-overlay"></div>
+      {/* Background decoration pattern */}
+      <div className="absolute inset-0 opacity-0 dark:opacity-10 pointer-events-none mix-blend-overlay bg-[radial-gradient(circle_at_25%_25%,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
 
       <Sidebar
         history={history}
