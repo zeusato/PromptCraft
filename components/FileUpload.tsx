@@ -70,10 +70,10 @@ const FileUpload: React.FC<FileUploadProps> = ({
       {!fileData ? (
         <div
           onClick={() => fileInputRef.current?.click()}
-          className={`border-2 border-dashed border-white/20 rounded-xl p-2 flex flex-col items-center justify-center cursor-pointer hover:border-primary hover:bg-white/5 transition duration-300 ${height}`}
+          className={`border-2 border-dashed border-slate-300 dark:border-white/20 rounded-xl p-2 flex flex-col items-center justify-center cursor-pointer hover:border-primary dark:hover:border-primary bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 transition duration-300 ${height}`}
         >
-          <span className="material-symbols-rounded text-slate-500 group-hover:text-primary text-3xl mb-1 transition-colors">cloud_upload</span>
-          <span className="text-[10px] text-slate-400 text-center">{t('upload.label')}</span>
+          <span className="material-symbols-rounded text-slate-400 dark:text-slate-500 group-hover:text-primary text-3xl mb-1 transition-colors">cloud_upload</span>
+          <span className="text-[10px] text-slate-600 dark:text-slate-400 text-center">{t('upload.label')}</span>
         </div>
       ) : (
         <div className={`relative border border-white/10 rounded-xl overflow-hidden group ${height} bg-black/40 flex items-center justify-center`}>

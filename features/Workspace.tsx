@@ -163,7 +163,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                 return (
                     <div className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-slate-400 mb-1">{t('form.topic')}</label>
+                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-400 mb-1">{t('form.topic')}</label>
                             <textarea
                                 className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl p-3 text-main dark:text-white focus:ring-2 focus:ring-primary focus:bg-white dark:focus:bg-white/10 outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
                                 rows={4}
@@ -173,7 +173,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-slate-400 mb-1">{t('form.level')}</label>
+                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-400 mb-1">{t('form.level')}</label>
                             <select
                                 className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl p-3 text-main dark:text-white focus:bg-white dark:focus:bg-white/10 outline-none transition-colors [&>option]:bg-white dark:[&>option]:bg-slate-900 [&>option]:text-main dark:[&>option]:text-white"
                                 value={inputs.depth || 'standard'}
@@ -185,7 +185,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                             </select>
                         </div>
                         <div className="bg-white/5 p-4 rounded-xl border border-white/10">
-                            <p className="text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider">{t('common.advanced')}</p>
+                            <p className="text-xs font-bold text-slate-500 dark:text-slate-400 mb-3 uppercase tracking-wider">{t('common.advanced')}</p>
                             <div className="grid grid-cols-2 gap-3">
                                 <input
                                     type="text"
@@ -210,7 +210,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
             case TaskType.IMAGE:
                 return (
                     <div className="space-y-4">
-                        <div className="flex gap-2 bg-black/20 p-1.5 rounded-xl border border-white/5">
+                        <div className="flex gap-2 bg-slate-100 dark:bg-black/20 p-1.5 rounded-xl border border-slate-200 dark:border-white/5">
                             {[
                                 { id: 'Generate', label: t('form.img.sub.generate') },
                                 { id: 'Analyze', label: t('form.img.sub.analyze') },
@@ -219,7 +219,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                 <button
                                     key={sub.id}
                                     onClick={() => { setSubtype(sub.id); setInputs({}); }}
-                                    className={`flex-1 py-2 text-xs rounded-lg font-bold transition-all duration-300 ${subtype === sub.id ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+                                    className={`flex-1 py-2 text-xs rounded-lg font-bold transition-all duration-300 ${subtype === sub.id ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-white/5'}`}
                                 >
                                     {sub.label}
                                 </button>
@@ -245,13 +245,13 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                                 className="w-5 h-5 rounded-md bg-white/10 border-white/20 text-primary focus:ring-primary focus:ring-offset-0"
                                                 onChange={e => handleInputChange('useRefFace', e.target.checked)}
                                             />
-                                            <span className="text-sm text-slate-300 font-medium">{t('form.img.use_ref_face')}</span>
+                                            <span className="text-sm text-slate-700 dark:text-slate-300 font-medium">{t('form.img.use_ref_face')}</span>
                                         </label>
                                     </div>
                                 )}
 
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-400 mb-1">
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-400 mb-1">
                                         {subtype === 'Analyze' ? t('form.img.desc_analyze') : t('form.img.desc_generate')}
                                     </label>
                                     <textarea
@@ -283,7 +283,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                         </div>
                         <label className="flex items-center gap-2 cursor-pointer group">
                             <input type="checkbox" checked={inputs.inspire || false} className="w-4 h-4 rounded bg-white/10 border-white/20 text-primary focus:ring-primary" onChange={e => handleInputChange('inspire', e.target.checked)} />
-                            <span className="text-sm text-slate-400 group-hover:text-white transition-colors">{t('form.img.inspire')}</span>
+                            <span className="text-sm text-slate-500 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">{t('form.img.inspire')}</span>
                         </label>
 
                     </div>
@@ -292,7 +292,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
             case TaskType.VIDEO:
                 return (
                     <div className="space-y-4">
-                        <div className="flex gap-2 bg-black/20 p-1.5 rounded-xl border border-white/5">
+                        <div className="flex gap-2 bg-slate-100 dark:bg-black/20 p-1.5 rounded-xl border border-slate-200 dark:border-white/5">
                             {[
                                 { id: 'Prompt', label: t('form.vid.sub.prompt') },
                                 { id: 'Img2Video', label: t('form.vid.sub.img2vid') },
@@ -301,7 +301,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                 <button
                                     key={sub.id}
                                     onClick={() => { setSubtype(sub.id); setInputs({}); setShowAdvanced(false); }}
-                                    className={`flex-1 py-2 text-xs rounded-lg font-bold transition-all duration-300 ${subtype === sub.id ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+                                    className={`flex-1 py-2 text-xs rounded-lg font-bold transition-all duration-300 ${subtype === sub.id ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-white/5'}`}
                                 >
                                     {sub.label}
                                 </button>
@@ -317,7 +317,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
 
                         {subtype === 'Extend' && (
                             <div className="space-y-3 bg-white/5 p-4 rounded-xl border border-white/10">
-                                <label className="block text-sm font-medium text-slate-400">{t('form.vid.base_prompt')}</label>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-400">{t('form.vid.base_prompt')}</label>
                                 <textarea
                                     className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-3 text-main dark:text-white text-sm focus:bg-white dark:focus:bg-white/10 outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
                                     rows={3}
@@ -327,7 +327,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                 />
                                 <label className="flex items-center gap-2 cursor-pointer">
                                     <input type="checkbox" checked={inputs.keepConsistency !== false} className="w-4 h-4 rounded bg-white/10 border-white/20 text-primary" onChange={e => handleInputChange('keepConsistency', e.target.checked)} />
-                                    <span className="text-sm text-slate-300">{t('form.vid.consistency')}</span>
+                                    <span className="text-sm text-slate-700 dark:text-slate-300">{t('form.vid.consistency')}</span>
                                 </label>
                             </div>
                         )}
@@ -336,7 +336,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                         <div className="space-y-3">
                             {subtype === 'Extend' ? (
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-400 mb-1">{t('form.vid.extend_what')}</label>
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-400 mb-1">{t('form.vid.extend_what')}</label>
                                     <textarea
                                         className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl p-3 text-main dark:text-white focus:bg-white dark:focus:bg-white/10 outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
                                         rows={2}
@@ -348,7 +348,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                             ) : (
                                 <>
                                     <div>
-                                        <label className="block text-sm font-medium text-slate-400 mb-1">{t('form.vid.idea')}</label>
+                                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-400 mb-1">{t('form.vid.idea')}</label>
                                         <textarea
                                             className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl p-3 text-main dark:text-white focus:bg-white dark:focus:bg-white/10 outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
                                             rows={2}
@@ -361,18 +361,18 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                     {subtype === 'Prompt' && (
                                         <div className="grid grid-cols-2 gap-3">
                                             <div>
-                                                <label className="block text-xs text-slate-400 mb-1">{t('form.vid.env')}</label>
+                                                <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.vid.env')}</label>
                                                 <input type="text" placeholder="Cyberpunk city..." className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2.5 text-main dark:text-white text-sm focus:bg-white dark:focus:bg-white/10 outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500" value={inputs.context || ''} onChange={e => handleInputChange('context', e.target.value)} />
                                             </div>
                                             <div>
-                                                <label className="block text-xs text-slate-400 mb-1">{t('form.vid.subject')}</label>
+                                                <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.vid.subject')}</label>
                                                 <input type="text" placeholder="A robot..." className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2.5 text-main dark:text-white text-sm focus:bg-white dark:focus:bg-white/10 outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500" value={inputs.subject || ''} onChange={e => handleInputChange('subject', e.target.value)} />
                                             </div>
                                         </div>
                                     )}
 
                                     <div>
-                                        <label className="block text-xs text-slate-400 mb-1">{t('form.vid.audio_gen')}</label>
+                                        <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.vid.audio_gen')}</label>
                                         <input type="text" placeholder="Music, SFX..." className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2.5 text-main dark:text-white text-sm focus:bg-white dark:focus:bg-white/10 outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500" value={inputs.audio_general || ''} onChange={e => handleInputChange('audio_general', e.target.value)} />
                                     </div>
                                 </>
@@ -381,7 +381,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                             {/* Technical Configs */}
                             <div className="grid grid-cols-3 gap-2">
                                 <div>
-                                    <label className="block text-[10px] text-slate-400 mb-1 uppercase font-bold">{t('form.vid.duration')}</label>
+                                    <label className="block text-[10px] text-slate-500 dark:text-slate-400 mb-1 uppercase font-bold">{t('form.vid.duration')}</label>
                                     <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2 text-main dark:text-white text-sm outline-none focus:bg-white dark:focus:bg-white/10 [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.duration || '5s'} onChange={e => handleInputChange('duration', e.target.value)}>
                                         <option value="5s">5s</option>
                                         <option value="8s">8s</option>
@@ -389,7 +389,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-[10px] text-slate-400 mb-1 uppercase font-bold">{t('form.img.ratio')}</label>
+                                    <label className="block text-[10px] text-slate-500 dark:text-slate-400 mb-1 uppercase font-bold">{t('form.img.ratio')}</label>
                                     <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2 text-main dark:text-white text-sm outline-none focus:bg-white dark:focus:bg-white/10 [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.ratio || '16:9'} onChange={e => handleInputChange('ratio', e.target.value)}>
                                         <option value="16:9">16:9</option>
                                         <option value="9:16">9:16</option>
@@ -397,8 +397,8 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-[10px] text-slate-400 mb-1 uppercase font-bold">{t('form.vid.count')}</label>
-                                    <select className="w-full bg-white/5 border border-white/10 rounded-lg p-2 text-white text-sm outline-none focus:bg-white/10 [&>option]:bg-slate-900" value={inputs.count || '1'} onChange={e => handleInputChange('count', e.target.value)}>
+                                    <label className="block text-[10px] text-slate-500 dark:text-slate-400 mb-1 uppercase font-bold">{t('form.vid.count')}</label>
+                                    <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2 text-main dark:text-white text-sm outline-none focus:bg-white dark:focus:bg-white/10 [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.count || '1'} onChange={e => handleInputChange('count', e.target.value)}>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -414,7 +414,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                 onClick={() => setShowAdvanced(!showAdvanced)}
                                 className="w-full flex items-center justify-between p-3 bg-white/5 hover:bg-white/10 transition-colors"
                             >
-                                <span className="text-sm font-medium text-slate-300">{t('common.advanced')}</span>
+                                <span className="text-sm font-medium text-slate-600 dark:text-slate-300">{t('common.advanced')}</span>
                                 <span className="material-symbols-rounded text-slate-400 transform transition-transform duration-200" style={{ transform: showAdvanced ? 'rotate(180deg)' : 'rotate(0deg)' }}>expand_more</span>
                             </button>
 
@@ -423,8 +423,8 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                     {/* Camera */}
                                     <div className="grid grid-cols-2 gap-3">
                                         <div>
-                                            <label className="block text-xs text-slate-400 mb-1">{t('form.vid.cam_angle')}</label>
-                                            <select className="w-full bg-white/5 border border-white/10 rounded-lg p-2 text-white text-xs outline-none [&>option]:bg-slate-900" value={inputs.camera_angle || ''} onChange={e => handleInputChange('camera_angle', e.target.value)}>
+                                            <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.vid.cam_angle')}</label>
+                                            <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2 text-main dark:text-white text-xs outline-none [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.camera_angle || ''} onChange={e => handleInputChange('camera_angle', e.target.value)}>
                                                 <option value="">Auto</option>
                                                 <option value="wide">Wide</option>
                                                 <option value="medium">Medium</option>
@@ -434,8 +434,8 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                             </select>
                                         </div>
                                         <div>
-                                            <label className="block text-xs text-slate-400 mb-1">{t('form.vid.cam_motion')}</label>
-                                            <select className="w-full bg-white/5 border border-white/10 rounded-lg p-2 text-white text-xs outline-none [&>option]:bg-slate-900" value={inputs.camera_motion || ''} onChange={e => handleInputChange('camera_motion', e.target.value)}>
+                                            <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.vid.cam_motion')}</label>
+                                            <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2 text-main dark:text-white text-xs outline-none [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.camera_motion || ''} onChange={e => handleInputChange('camera_motion', e.target.value)}>
                                                 <option value="">Auto</option>
                                                 <option value="static">Static</option>
                                                 <option value="pan_left">Pan Left</option>
@@ -448,18 +448,18 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                     </div>
 
                                     <div className="grid grid-cols-2 gap-3">
-                                        <input type="text" placeholder={t('form.vid.lighting')} className="bg-white/5 border border-white/10 rounded-lg p-2 text-white text-xs outline-none focus:bg-white/10 placeholder-slate-500" value={inputs.lighting || ''} onChange={e => handleInputChange('lighting', e.target.value)} />
-                                        <input type="text" placeholder={t('form.img.style')} className="bg-white/5 border border-white/10 rounded-lg p-2 text-white text-xs outline-none focus:bg-white/10 placeholder-slate-500" value={inputs.style || ''} onChange={e => handleInputChange('style', e.target.value)} />
+                                        <input type="text" placeholder={t('form.vid.lighting')} className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2 text-main dark:text-white text-xs outline-none focus:bg-white dark:focus:bg-white/10 placeholder-slate-400 dark:placeholder-slate-500" value={inputs.lighting || ''} onChange={e => handleInputChange('lighting', e.target.value)} />
+                                        <input type="text" placeholder={t('form.img.style')} className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2 text-main dark:text-white text-xs outline-none focus:bg-white dark:focus:bg-white/10 placeholder-slate-400 dark:placeholder-slate-500" value={inputs.style || ''} onChange={e => handleInputChange('style', e.target.value)} />
                                     </div>
 
                                     <div>
-                                        <label className="block text-xs text-slate-400 mb-1">{t('form.vid.audio_det')}</label>
-                                        <textarea className="w-full bg-white/5 border border-white/10 rounded-lg p-2 text-white text-xs outline-none focus:bg-white/10" rows={2} value={inputs.audio_detailed || ''} onChange={e => handleInputChange('audio_detailed', e.target.value)} />
+                                        <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.vid.audio_det')}</label>
+                                        <textarea className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2 text-main dark:text-white text-xs outline-none focus:bg-white dark:focus:bg-white/10" rows={2} value={inputs.audio_detailed || ''} onChange={e => handleInputChange('audio_detailed', e.target.value)} />
                                     </div>
 
                                     <div>
-                                        <label className="block text-xs text-slate-400 mb-1">{t('form.vid.negative')}</label>
-                                        <input type="text" className="w-full bg-white/5 border border-white/10 rounded-lg p-2 text-white text-xs outline-none focus:bg-white/10" value={inputs.negative || ''} onChange={e => handleInputChange('negative', e.target.value)} />
+                                        <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.vid.negative')}</label>
+                                        <input type="text" className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2 text-main dark:text-white text-xs outline-none focus:bg-white dark:focus:bg-white/10" value={inputs.negative || ''} onChange={e => handleInputChange('negative', e.target.value)} />
                                     </div>
                                 </div>
                             )}
@@ -473,7 +473,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                 return (
                     <div className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-slate-400 mb-1">{t('form.outline.topic')}</label>
+                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-400 mb-1">{t('form.outline.topic')}</label>
                             <textarea
                                 className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl p-3 text-main dark:text-white focus:bg-white dark:focus:bg-white/10 focus:ring-primary outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
                                 rows={3}
@@ -488,7 +488,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                         </div>
                         <label className="flex items-center gap-2 cursor-pointer group">
                             <input type="checkbox" checked={inputs.auto_fill || false} className="w-4 h-4 rounded bg-white/10 border-white/20 text-primary focus:ring-primary" onChange={e => handleInputChange('auto_fill', e.target.checked)} />
-                            <span className="text-sm text-slate-400 group-hover:text-white transition-colors">{t('form.outline.autofill')}</span>
+                            <span className="text-sm text-slate-500 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">{t('form.outline.autofill')}</span>
                         </label>
 
                     </div>
@@ -498,7 +498,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                 return (
                     <div className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-slate-400 mb-1">{t('form.music.topic')}</label>
+                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-400 mb-1">{t('form.music.topic')}</label>
                             <textarea
                                 className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl p-3 text-main dark:text-white focus:bg-white dark:focus:bg-white/10 outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
                                 rows={3}
@@ -513,7 +513,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                         </div>
                         <label className="flex items-center gap-2 cursor-pointer group">
                             <input type="checkbox" checked={inputs.suno_ready || false} className="w-4 h-4 rounded bg-white/10 border-white/20 text-primary focus:ring-primary" onChange={e => handleInputChange('suno_ready', e.target.checked)} />
-                            <span className="text-sm text-slate-400 group-hover:text-white transition-colors">{t('form.music.suno')}</span>
+                            <span className="text-sm text-slate-500 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">{t('form.music.suno')}</span>
                         </label>
 
                     </div>
@@ -541,16 +541,16 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
 
         return (
             <div className="flex flex-col h-full overflow-hidden relative group">
-                <div className="absolute top-0 right-0 p-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10 bg-gradient-to-l from-black/80 to-transparent">
+                <div className="absolute top-0 right-0 p-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10 bg-gradient-to-l from-white/90 to-transparent dark:from-black/80">
                     <button
                         onClick={() => setOutputMode(PromptFormat.TEXT)}
-                        className={`px-3 py-1 text-xs rounded-full font-bold backdrop-blur-md border border-white/10 transition-colors ${outputMode === PromptFormat.TEXT ? 'bg-primary text-white' : 'bg-black/40 text-slate-400 hover:text-white'}`}
+                        className={`px-3 py-1 text-xs rounded-full font-bold backdrop-blur-md border border-slate-200 dark:border-white/10 transition-colors ${outputMode === PromptFormat.TEXT ? 'bg-primary text-white' : 'bg-white/80 dark:bg-black/40 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
                     >
                         Text
                     </button>
                     <button
                         onClick={() => setOutputMode(PromptFormat.JSON)}
-                        className={`px-3 py-1 text-xs rounded-full font-bold backdrop-blur-md border border-white/10 transition-colors ${outputMode === PromptFormat.JSON ? 'bg-primary text-white' : 'bg-black/40 text-slate-400 hover:text-white'}`}
+                        className={`px-3 py-1 text-xs rounded-full font-bold backdrop-blur-md border border-slate-200 dark:border-white/10 transition-colors ${outputMode === PromptFormat.JSON ? 'bg-primary text-white' : 'bg-white/80 dark:bg-black/40 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
                     >
                         JSON
                     </button>
@@ -562,12 +562,12 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                     )}
                     <button
                         onClick={() => copyToClipboard(outputMode === PromptFormat.TEXT ? output.final_prompt_text : JSON.stringify(output.final_prompt_json || output, null, 2))}
-                        className="bg-black/40 text-slate-400 hover:text-white p-1.5 rounded-full backdrop-blur-md border border-white/10 transition-colors"
+                        className="bg-white/80 dark:bg-black/40 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white p-1.5 rounded-full backdrop-blur-md border border-slate-200 dark:border-white/10 transition-colors"
                         title={t('common.copy')}
                     >
                         <span className="material-symbols-rounded text-sm">content_copy</span>
                     </button>
-                    <button className="bg-black/40 text-slate-400 hover:text-white p-1.5 rounded-full backdrop-blur-md border border-white/10 transition-colors" title={t('common.download')}>
+                    <button className="bg-white/80 dark:bg-black/40 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white p-1.5 rounded-full backdrop-blur-md border border-slate-200 dark:border-white/10 transition-colors" title={t('common.download')}>
                         <span className="material-symbols-rounded text-sm">download</span>
                     </button>
                 </div>
@@ -579,12 +579,12 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                             <div className="space-y-6">
                                 {/* Highlight AI Assumptions */}
                                 {output.assumptions && output.assumptions.length > 0 && (
-                                    <div className="bg-accent/10 border border-accent/20 rounded-xl p-4 relative overflow-hidden">
+                                    <div className="bg-indigo-50 dark:bg-accent/10 border border-indigo-100 dark:border-accent/20 rounded-xl p-4 relative overflow-hidden">
                                         <div className="absolute top-0 left-0 w-1 h-full bg-accent"></div>
                                         <p className="text-accent text-xs font-bold uppercase mb-2 flex items-center gap-2">
                                             <span className="material-symbols-rounded text-sm">lightbulb</span> {t('workspace.ai_assumptions')}
                                         </p>
-                                        <ul className="list-disc list-inside text-sm text-slate-300 space-y-1">
+                                        <ul className="list-disc list-inside text-sm text-slate-700 dark:text-slate-300 space-y-1">
                                             {output.assumptions.map((a, i) => (
                                                 <li key={i}>{a.value}</li>
                                             ))}
@@ -618,16 +618,66 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                     </div>
                                 ) : (
                                     /* Highlight Fields Standard */
-                                    <div className="font-mono text-sm leading-relaxed whitespace-pre-wrap text-slate-300">
-                                        {(output.final_prompt_text || '').split('\n').map((line, i) => {
-                                            const isHeader = /^[A-Z\s]+:/.test(line);
+                                    (() => {
+                                        const promptText = output.final_prompt_text || '';
+                                        const hasSplit = promptText.includes('[ENGLISH]') && promptText.includes('[TIẾNG VIỆT]');
+
+                                        if (hasSplit) {
+                                            const parts = promptText.split('[TIẾNG VIỆT]');
+                                            const engPart = parts[0].replace('[ENGLISH]', '').trim();
+                                            const vnPart = parts[1] ? parts[1].trim() : '';
+
                                             return (
-                                                <div key={i} className={isHeader ? "text-primary font-bold mt-6 text-base border-b border-primary/20 pb-1 mb-2 inline-block" : "text-slate-200 pl-4 border-l-2 border-slate-700/50 hover:border-slate-500/50 transition-colors"}>
-                                                    {line}
+                                                <div className="space-y-8">
+                                                    {/* English Section */}
+                                                    <div className="space-y-2">
+                                                        <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                                                            <h3 className="text-primary font-bold text-sm uppercase tracking-wider">English Prompt</h3>
+                                                            <button
+                                                                onClick={() => copyToClipboard(engPart)}
+                                                                className="text-xs text-slate-400 hover:text-white flex items-center gap-1 transition-colors bg-white/5 hover:bg-white/10 px-2 py-1 rounded-lg"
+                                                            >
+                                                                <span className="material-symbols-rounded text-sm">content_copy</span> Copy
+                                                            </button>
+                                                        </div>
+                                                        <div className="font-mono text-sm leading-relaxed whitespace-pre-wrap text-slate-600 dark:text-slate-300 pl-4 border-l-2 border-primary/30">
+                                                            {engPart}
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Vietnamese Section */}
+                                                    <div className="space-y-2">
+                                                        <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                                                            <h3 className="text-purple-400 font-bold text-sm uppercase tracking-wider">Tiếng Việt</h3>
+                                                            <button
+                                                                onClick={() => copyToClipboard(vnPart)}
+                                                                className="text-xs text-slate-400 hover:text-white flex items-center gap-1 transition-colors bg-white/5 hover:bg-white/10 px-2 py-1 rounded-lg"
+                                                            >
+                                                                <span className="material-symbols-rounded text-sm">content_copy</span> Copy
+                                                            </button>
+                                                        </div>
+                                                        <div className="font-mono text-sm leading-relaxed whitespace-pre-wrap text-slate-600 dark:text-slate-300 pl-4 border-l-2 border-purple-500/30">
+                                                            {vnPart}
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             );
-                                        })}
-                                    </div>
+                                        } else {
+                                            return (
+                                                <div className="font-mono text-sm leading-relaxed whitespace-pre-wrap text-slate-600 dark:text-slate-300">
+                                                    {promptText.split('\n').map((line, i) => {
+                                                        const isHeader = /^[A-Z\s]+:/.test(line);
+                                                        return (
+                                                            <div key={i} className={isHeader ? "text-primary font-bold mt-6 text-base border-b border-primary/20 pb-1 mb-2 inline-block" : "text-slate-700 dark:text-slate-200 pl-4 border-l-2 border-slate-300/50 dark:border-slate-700/50 hover:border-slate-400 dark:hover:border-slate-500/50 transition-colors"}>
+                                                                {line}
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            );
+                                        }
+                                    })()
+
                                 )}
                             </div>
                         ) : (
@@ -661,7 +711,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
             {/* Input Form Area - The "Control Panel" */}
             {/* Input Form Area - The "Control Panel" */}
             {/* Input Form Area - The "Control Panel" */}
-            <div className="w-full md:w-1/3 bg-surface/50 backdrop-blur-xl border-l border-white/5 order-1 md:order-2 flex flex-col flex-none min-h-0 md:h-full shadow-glass z-20 rounded-none md:rounded-r-lg overflow-hidden border-b border-border md:border-b-0 relative">
+            <div className="w-full md:w-1/3 bg-surface/50 backdrop-blur-xl border-l border-white/5 order-1 md:order-2 flex flex-col flex-1 min-h-0 md:h-full shadow-glass z-20 rounded-none md:rounded-r-lg overflow-hidden border-b border-border md:border-b-0 relative">
                 <div className="hidden md:block">
                     {renderTabs()}
                 </div>
@@ -735,17 +785,49 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                     </button>
                                 </div>
 
-                                {/* Copy Button */}
-                                <button
-                                    onClick={() => {
-                                        copyToClipboard(outputMode === PromptFormat.TEXT ? output.final_prompt_text : JSON.stringify(output.final_prompt_json || output, null, 2));
-                                    }}
-                                    className="w-full bg-slate-900 dark:bg-gradient-to-r dark:from-white dark:to-slate-300 hover:bg-black dark:hover:from-slate-100 dark:hover:to-slate-400 text-white dark:text-black font-bold text-lg py-5 rounded-2xl shadow-xl shadow-black/10 dark:shadow-white/5 hover:shadow-black/20 dark:hover:shadow-white/20 transition-all active:scale-95 flex items-center justify-center gap-3 relative overflow-hidden group"
-                                >
-                                    <span className="absolute inset-0 bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                                    <span className="material-symbols-rounded text-2xl">content_copy</span>
-                                    {t('common.copy')}
-                                </button>
+                                {/* Copy Button(s) */}
+                                {(() => {
+                                    const promptText = output.final_prompt_text || '';
+                                    const hasSplit = outputMode === PromptFormat.TEXT && promptText.includes('[ENGLISH]') && promptText.includes('[TIẾNG VIỆT]');
+
+                                    if (hasSplit) {
+                                        const parts = promptText.split('[TIẾNG VIỆT]');
+                                        const engPart = parts[0].replace('[ENGLISH]', '').trim();
+                                        const vnPart = parts[1] ? parts[1].trim() : '';
+
+                                        return (
+                                            <div className="flex gap-3">
+                                                <button
+                                                    onClick={() => copyToClipboard(engPart)}
+                                                    className="flex-1 bg-slate-900 dark:bg-primary/20 border border-primary/30 hover:bg-primary/30 text-white font-bold text-sm py-4 rounded-xl transition-all active:scale-95 flex items-center justify-center gap-2"
+                                                >
+                                                    <span className="material-symbols-rounded text-xl">content_copy</span>
+                                                    Copy English
+                                                </button>
+                                                <button
+                                                    onClick={() => copyToClipboard(vnPart)}
+                                                    className="flex-1 bg-slate-900 dark:bg-purple-500/20 border border-purple-500/30 hover:bg-purple-500/30 text-white font-bold text-sm py-4 rounded-xl transition-all active:scale-95 flex items-center justify-center gap-2"
+                                                >
+                                                    <span className="material-symbols-rounded text-xl">content_copy</span>
+                                                    Copy VN
+                                                </button>
+                                            </div>
+                                        );
+                                    }
+
+                                    return (
+                                        <button
+                                            onClick={() => {
+                                                copyToClipboard(outputMode === PromptFormat.TEXT ? output.final_prompt_text : JSON.stringify(output.final_prompt_json || output, null, 2));
+                                            }}
+                                            className="w-full bg-slate-900 dark:bg-gradient-to-r dark:from-white dark:to-slate-300 hover:bg-black dark:hover:from-slate-100 dark:hover:to-slate-400 text-white dark:text-black font-bold text-lg py-5 rounded-2xl shadow-xl shadow-black/10 dark:shadow-white/5 hover:shadow-black/20 dark:hover:shadow-white/20 transition-all active:scale-95 flex items-center justify-center gap-3 relative overflow-hidden group"
+                                        >
+                                            <span className="absolute inset-0 bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                                            <span className="material-symbols-rounded text-2xl">content_copy</span>
+                                            {t('common.copy')}
+                                        </button>
+                                    );
+                                })()}
                             </div>
                         </div>
                     </div>
