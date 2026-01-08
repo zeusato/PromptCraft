@@ -26,6 +26,7 @@ export const translations = {
     "sidebar.history": "Lịch sử",
     "sidebar.empty": "Chưa có lịch sử.",
     "sidebar.settings": "Cài đặt",
+    "sidebar.install": "Tải App",
     "sidebar.clear": "Xóa tất cả",
     "sidebar.confirm_clear": "Bạn có chắc chắn muốn xóa toàn bộ lịch sử?",
 
@@ -71,7 +72,7 @@ export const translations = {
     "form.level.deep": "Chuyên sâu",
     "form.timeframe": "Phạm vi thời gian",
     "form.format_output": "Định dạng (Bảng/Gạch đầu dòng)",
-    
+
     "form.img.sub.generate": "Tạo mới",
     "form.img.sub.analyze": "Phân tích",
     "form.img.sub.compose": "Phối hợp",
@@ -154,6 +155,7 @@ export const translations = {
     "sidebar.history": "History",
     "sidebar.empty": "No history yet.",
     "sidebar.settings": "Settings",
+    "sidebar.install": "Install App",
     "sidebar.clear": "Clear All",
     "sidebar.confirm_clear": "Are you sure you want to delete all history?",
 
@@ -199,7 +201,7 @@ export const translations = {
     "form.level.deep": "Deep Dive",
     "form.timeframe": "Timeframe",
     "form.format_output": "Format (Table/Bullets)",
-    
+
     "form.img.sub.generate": "Generate",
     "form.img.sub.analyze": "Analyze",
     "form.img.sub.compose": "Compose",

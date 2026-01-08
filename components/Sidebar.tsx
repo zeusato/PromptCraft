@@ -1,6 +1,7 @@
 import React from 'react';
 import { HistoryItem, TaskType } from '../types';
 import { useApp } from '../contexts/AppContext';
+import { usePWAInstall } from '../hooks/usePWAInstall';
 
 interface SidebarProps {
   history: HistoryItem[];
@@ -17,6 +18,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   history, onSelectHistory, onDeleteHistoryItem, onClearHistory, onOpenSettings, isOpen, toggleSidebar
 }) => {
   const { t } = useApp();
+  const { isInstallable, installApp } = usePWAInstall();
 
   const getIcon = (type: TaskType) => {
     switch (type) {
@@ -131,8 +133,20 @@ const Sidebar: React.FC<SidebarProps> = ({
           </div>
         </div>
 
-        {/* Settings Footer */}
-        <div className="p-4 mt-auto">
+        {/* Footer Actions */}
+        <div className="p-4 mt-auto space-y-2">
+          {/* Install App Button - only shown when installable */}
+          {isInstallable && (
+            <button
+              onClick={installApp}
+              className="w-full flex items-center gap-3 p-3 rounded-xl text-white bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-500 border border-white/20 transition-all group shadow-lg shadow-primary/20 active:scale-[0.98]"
+            >
+              <span className="material-symbols-rounded group-hover:scale-110 transition-transform duration-300">download</span>
+              <span className="text-sm font-medium">{t('sidebar.install')}</span>
+            </button>
+          )}
+
+          {/* Settings Button */}
           <button
             onClick={onOpenSettings}
             className="w-full flex items-center gap-3 p-3 rounded-xl text-slate-700 dark:text-slate-400 hover:text-primary dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 border border-transparent hover:border-black/5 dark:hover:border-white/10 transition-all group"

@@ -5,6 +5,7 @@ import SettingsModal from './components/SettingsModal';
 import ApiKeyModal from './components/ApiKeyModal';
 import { getHistory, clearHistory, deleteHistoryItem } from './services/db';
 import { TaskType, HistoryItem } from './types';
+import { usePWAInstall } from './hooks/usePWAInstall';
 
 const App: React.FC = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -14,6 +15,8 @@ const App: React.FC = () => {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [activeTab, setActiveTab] = useState<TaskType>(TaskType.RESEARCH);
   const [loadedHistoryItem, setLoadedHistoryItem] = useState<any>(null);
+
+  const { isInstallable, installApp } = usePWAInstall();
 
   useEffect(() => {
     refreshHistory();
@@ -61,12 +64,24 @@ const App: React.FC = () => {
       />
 
       <div className="flex-1 flex flex-col h-full relative z-10 glass-effect rounded-l-3xl overflow-hidden ml-0 md:ml-4 my-0 md:my-4 mr-0 md:mr-4 border border-white/10 shadow-2xl backdrop-blur-xl">
-        <button
-          className="md:hidden fixed bottom-28 left-6 z-50 p-3 rounded-full bg-primary/90 border border-white/20 text-white shadow-lg shadow-primary/30 backdrop-blur-xl active:scale-95 transition-transform"
-          onClick={() => setSidebarOpen(true)}
-        >
-          <span className="material-symbols-rounded text-2xl">menu</span>
-        </button>
+        {/* Mobile floating buttons */}
+        <div className="md:hidden fixed bottom-28 left-6 z-50 flex flex-col gap-3">
+          {isInstallable && (
+            <button
+              className="p-3 rounded-full bg-gradient-to-r from-primary to-purple-600 border border-white/20 text-white shadow-lg shadow-primary/30 backdrop-blur-xl active:scale-95 transition-transform"
+              onClick={installApp}
+              title="Tải App"
+            >
+              <span className="material-symbols-rounded text-2xl">download</span>
+            </button>
+          )}
+          <button
+            className="p-3 rounded-full bg-primary/90 border border-white/20 text-white shadow-lg shadow-primary/30 backdrop-blur-xl active:scale-95 transition-transform"
+            onClick={() => setSidebarOpen(true)}
+          >
+            <span className="material-symbols-rounded text-2xl">menu</span>
+          </button>
+        </div>
 
         <Workspace
           activeTab={activeTab}
