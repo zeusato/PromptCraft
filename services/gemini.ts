@@ -66,47 +66,116 @@ OUTPUT MUST BE VALID JSON matching this exact structure:
   let taskInstructions = '';
 
   if (taskType === TaskType.IMAGE) {
-    // Build subtype-specific detailed instructions
-    let subtypeInstructions = '';
-
     if (subtype === 'Analyze') {
-      subtypeInstructions = `
-**CRITICAL FOR ANALYZE MODE:**
-You MUST extract EXTREMELY DETAILED descriptions from the provided image to enable accurate recreation.
-Describe EXACTLY what you see - every detail matters for achieving 95%+ similarity:
+      taskInstructions = `
+TASK: IMAGE ANALYSIS
 
-1. POSE & BODY POSITION: Exact body orientation (front/side/3-4 view), arm positions (raised/lowered/bent angle), hand positions (fingers spread/closed/holding something), leg positions (crossed/apart/bent), head tilt angle, shoulder alignment
+You are an expert image analyzer. Your task is to analyze the input image and produce a structured JSON description that represents a valid prompt to recreate this image with high fidelity.
 
-2. FACIAL EXPRESSION: Exact mouth shape (open/closed/slight smile/pursed), eye direction (looking at camera/up/down/side), eyebrow position (raised/relaxed/furrowed), overall emotion conveyed
+You MUST return the result in the 'final_prompt_json' field following this EXACT structure:
 
-3. CLOTHING DETAILS: 
-   - Each garment separately (top, bottom, jacket, etc.)
-   - Exact colors with shades (not just "red" but "deep burgundy" or "bright cherry red")
-   - Fabric type and texture (shiny satin, matte cotton, fluffy fleece, leather grain)
-   - How clothing fits (tight/loose, draped/structured)
-   - Visible seams, buttons, zippers, patterns, logos
-   - How clothing interacts with body (pulled on shoulder, tucked in, flowing)
+{
+  "task": "create_realistic_cinematic_portrait_16_9",
+  "scene": {
+    "setting": "outdoor landscape portrait with an epic, majestic backdrop...",
+    "environment": {
+      "background_scale": "very large, grand background...",
+      "background_elements": ["list of elements..."],
+      "foreground_elements": ["list of elements..."],
+      "color_story": {
+        "dominant_colors": ["..."],
+        "accent_colors": ["..."],
+        "overall_tone": "..."
+      }
+    },
+    "lighting": {
+      "type": "...",
+      "direction": "...",
+      "quality": "...",
+      "mood": "..."
+    },
+    "weather": {
+      "atmosphere": "...",
+      "visibility": "..."
+    }
+  },
+  "character": {
+    "count": 1,
+    "placement_in_frame": {
+      "rule": "subject occupies only 1/4 of the frame...",
+      "position": "..."
+    },
+    "appearance": {
+      "gender_presentation": "...",
+      "age_range": "...",
+      "body_type": "...",
+      "face_proportion_notes": "...",
+      "hair": { "style": "...", "color": "..." },
+      "facial_hair": { "style": "..." },
+      "wardrobe": {
+        "style": "...",
+        "options": ["..."],
+        "notes": "..."
+      },
+      "accessories": ["..."]
+    },
+    "expression": "...",
+    "pose": {
+      "body_position": "...",
+      "head": "...",
+      "hands": "...",
+      "posture": "..."
+    }
+  },
+  "composition": {
+    "aspect_ratio": "...",
+    "framing": "...",
+    "rule_of_thirds": "...",
+    "depth_layers": ["..."],
+    "leading_lines": ["..."],
+    "avoid": ["..."]
+  },
+  "camera": {
+    "camera_type": "...",
+    "lens": "...",
+    "distance": "...",
+    "aperture": "...",
+    "focus": "...",
+    "exposure": "..."
+  },
+  "style": {
+    "art_type": "...",
+    "contrast": "...",
+    "color_grading": "...",
+    "post_processing": ["..."]
+  },
+  "negative_prompt": ["..."],
+  "generation_rules": {
+    "layout_lock": "...",
+    "background_lock": "...",
+    "body_lock": "...",
+    "no_glasses_rule": "...",
+    "no_text_rule": "..."
+  },
+  "note_for_model": "..." 
+}
 
-4. ENVIRONMENT: 
-   - Exact setting (indoor/outdoor, specific location type)
-   - All visible objects and their positions relative to subject
-   - Background depth and blur level
-   - Surface textures (wood grain, marble pattern, fabric)
-   - Weather/atmospheric conditions if visible
+**IMPORTANT INSTRUCTION FOR 'note_for_model':**
+Check the user input "useRefFace" (Use Reference Face). 
+- IF "useRefFace" is TRUE (or checked): You MUST set "note_for_model" to exactly:
+  "⚠️ A reference face image will be attached. Replace the subject’s face with the reference face at MAXIMUM identity fidelity (facial structure, eyes, nose, lips, skin tone). Keep head/face size natural (no oversized face). Maintain the wide 16:9 composition with the subject small on the RIGHT (only 1/4 frame) and the majestic landscape dominating the LEFT/background. NO glasses. Ensure lighting and color grading match the environment naturally and the swapped face blends seamlessly."
+- IF "useRefFace" is FALSE: Set "note_for_model" to null or an empty string.
 
-5. LIGHTING: 
-   - Light source direction and type (natural/artificial, soft/hard)
-   - Shadow placement and intensity
-   - Highlights on skin, hair, clothing
-   - Overall color temperature (warm/cool)
-
-6. CAMERA: 
-   - Exact shot framing (what body parts are visible, cropping)
-   - Lens perspective (wide angle distortion or telephoto compression)
-   - Depth of field (what's sharp vs blurred)
+**IMPORTANT FOR final_prompt_text:**
+Construct a high-quality natural language prompt based on the analysis.
+IF "useRefFace" is TRUE, append the same note text above to the very end of the final_prompt_text (in the English section).
 `;
-    } else if (subtype === 'Generate') {
-      subtypeInstructions = `
+    } else {
+      // Logic for Generate and Compose
+      let subtypeInstructions = '';
+
+      if (subtype === 'Generate') {
+        subtypeInstructions = `
 **CRITICAL FOR GENERATE MODE:**
 Transform the user's basic concept into a professional, detailed prompt that will produce stunning results.
 
@@ -175,8 +244,8 @@ Transform the user's basic concept into a professional, detailed prompt that wil
    - Match composition or pose inspiration
    - Note: "Use provided reference image for [specific element]"
 `;
-    } else if (subtype === 'Compose') {
-      subtypeInstructions = `
+      } else if (subtype === 'Compose') {
+        subtypeInstructions = `
 **CRITICAL FOR COMPOSE MODE:**
 You are combining elements from MULTIPLE reference images into one cohesive image.
 Analyze EACH provided image carefully and extract the specified elements:
@@ -202,9 +271,9 @@ IMPORTANT: The final prompt must explicitly instruct:
 
 If any image is missing, use the user's text description or make creative choices that match the overall style.
 `;
-    }
+      }
 
-    taskInstructions = `
+      taskInstructions = `
 TASK: IMAGE PROMPT (${subtype})
 
 ${subtypeInstructions}
@@ -312,9 +381,9 @@ Generate a comprehensive image prompt with this JSON structure for final_prompt_
 
 SUBTYPE RULES:
 - Generate: Create new image from text description, fill in creative details. If reference images provided, use them as inspiration.
-- Analyze: Extract MAXIMUM detail from provided image for accurate recreation - be exhaustively specific about every visual element.
 - Compose: COMBINE elements from multiple reference images (contextImg=scene, charImg=face, outfitImg=clothes, poseImg=pose). The final prompt MUST reference using all provided images together.
 `;
+    }
   } else if (taskType === TaskType.VIDEO) {
     // Determine video count and subtype for specific instructions
     const videoCount = parseInt(cleanInputs.count) || 1;
