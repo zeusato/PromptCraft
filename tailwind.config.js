@@ -37,8 +37,8 @@ export default {
                     '100%': { opacity: '1', transform: 'translateY(0)' },
                 },
                 pulseGlow: {
-                    '0%, 100%': { opacity: '1', boxShadow: '0 0 10px rgba(99, 102, 241, 0.5)' },
-                    '50%': { opacity: '0.8', boxShadow: '0 0 20px rgba(99, 102, 241, 0.8)' },
+                    '0%, 100%': { opacity: '1', boxShadow: '0 0 10px rgba(255, 95, 31, 0.5)' },
+                    '50%': { opacity: '0.8', boxShadow: '0 0 20px rgba(255, 95, 31, 0.8)' },
                 },
                 float: {
                     '0%, 100%': { transform: 'translateY(0)' },
@@ -50,7 +50,6 @@ export default {
                 'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
             },
             backgroundImage: {
-                'cosmic-gradient': 'linear-gradient(to bottom right, #030712, #1e1b4b)',
             }
         },
     },

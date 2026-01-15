@@ -31,13 +31,13 @@ export const initDB = () => {
           const historyStore = db.createObjectStore('history', { keyPath: 'id' });
           historyStore.createIndex('by-date', 'createdAt');
         }
-        
+
         // Version 2: Secrets & Settings
         if (!db.objectStoreNames.contains('secrets')) {
           db.createObjectStore('secrets', { keyPath: 'id' });
         }
         if (!db.objectStoreNames.contains('settings')) {
-          db.createObjectStore('settings', { keyPath: 'id' }); 
+          db.createObjectStore('settings', { keyPath: 'id' });
         }
       },
     });
@@ -53,7 +53,7 @@ export const saveHistory = async (item: HistoryItem) => {
   if (keys.length > 10) {
     const itemsToDelete = keys.length - 10;
     for (let i = 0; i < itemsToDelete; i++) {
-        await db.delete('history', keys[i]);
+      await db.delete('history', keys[i]);
     }
   }
 };
@@ -96,24 +96,25 @@ export const deleteApiKey = async () => {
 // --- Settings ---
 const SETTINGS_ID = 'main_settings';
 const DEFAULT_SETTINGS: AppSettings = {
-    theme: 'dark',
-    language: AppLanguage.VI,
-    defaultOutput: PromptFormat.TEXT,
-    highlightAI: true
+  theme: 'light',
+  language: AppLanguage.VI,
+  defaultOutput: PromptFormat.TEXT,
+  highlightAI: true,
+  favorites: []
 };
 
 export const saveSettings = async (settings: AppSettings) => {
-    const db = await initDB();
-    // We store it with an ID to fit the store structure
-    await db.put('settings', { ...settings, id: SETTINGS_ID } as any);
+  const db = await initDB();
+  // We store it with an ID to fit the store structure
+  await db.put('settings', { ...settings, id: SETTINGS_ID } as any);
 };
 
 export const getSettings = async (): Promise<AppSettings> => {
-    const db = await initDB();
-    const result = await db.get('settings', SETTINGS_ID);
-    if (!result) return DEFAULT_SETTINGS;
-    // Remove the ID before returning
-    const { id, ...settings } = result as any;
-    // Merge with default to ensure new fields exist
-    return { ...DEFAULT_SETTINGS, ...settings } as AppSettings;
+  const db = await initDB();
+  const result = await db.get('settings', SETTINGS_ID);
+  if (!result) return DEFAULT_SETTINGS;
+  // Remove the ID before returning
+  const { id, ...settings } = result as any;
+  // Merge with default to ensure new fields exist
+  return { ...DEFAULT_SETTINGS, ...settings } as AppSettings;
 };

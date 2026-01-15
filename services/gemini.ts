@@ -734,6 +734,324 @@ Generate a music/song prompt. For final_prompt_json:
   "production_notes": "..."
 }
 `;
+  } else if (taskType === TaskType.CODING) {
+    // Coding - Project Spec Generator
+    const platform = cleanInputs.platform || 'web';
+    const devices = cleanInputs.devices || [];
+    const framework = cleanInputs.framework || 'React';
+    const database = cleanInputs.database || 'none';
+    const hasAuth = cleanInputs.auth === true || cleanInputs.auth === 'true';
+    const styling = cleanInputs.styling || 'tailwind';
+    const projectSize = cleanInputs.size || 'mvp';
+    const features = cleanInputs.features || [];
+
+    taskInstructions = `
+TASK: CODING PROJECT SPEC GENERATOR
+
+You are creating a DETAILED PROJECT SPECIFICATION that can be directly used with AI coding assistants (Cursor, GitHub Copilot, Claude, etc.) to build the project.
+
+USER'S PROJECT IDEA:
+${cleanInputs.idea || 'No idea provided'}
+
+PROJECT CONFIGURATION:
+- Platform: ${platform}
+- Target Devices: ${devices.length > 0 ? devices.join(', ') : 'Not specified'}
+- Framework/Language: ${framework}
+- Database: ${database}
+- Authentication Required: ${hasAuth ? 'Yes' : 'No'}
+- Styling: ${styling}
+- Project Size: ${projectSize}
+- Additional Features: ${features.length > 0 ? features.join(', ') : 'None'}
+
+YOUR TASK:
+Transform this basic idea into an EXHAUSTIVE, PRODUCTION-READY specification. The output should be so detailed that an AI coding assistant (or junior developer) can implement it directly without needing clarification.
+
+SPECIFICATION STRUCTURE:
+
+1. **PROJECT OVERVIEW**
+   - Clear project name suggestion
+   - One-paragraph executive summary
+   - Core value proposition
+   - Target users/audience
+
+2. **FEATURES & REQUIREMENTS**
+   - Core features (MVP must-haves)
+   - Secondary features (nice-to-haves)
+   - User stories for each major feature
+   - Acceptance criteria
+
+3. **TECHNICAL ARCHITECTURE**
+   - Overall architecture pattern (MVC, Clean Architecture, etc.)
+   - Tech stack breakdown with versions
+   - Folder structure
+   - Key modules and their responsibilities
+
+4. **DATA MODEL**
+   - All entities with their fields
+   - Relationships between entities
+   - Database schema if applicable
+   - API endpoints if applicable
+
+5. **UI/UX GUIDELINES**
+   - Key screens/pages list
+   - Navigation flow
+   - Design system basics (colors, typography, spacing)
+   - Responsive breakpoints
+
+6. **IMPLEMENTATION ROADMAP**
+   - Phase 1 (Foundation)
+   - Phase 2 (Core Features)
+   - Phase 3 (Polish)
+   - Estimated complexity for each phase
+
+7. **QUALITY REQUIREMENTS**
+   - Performance targets
+   - Security considerations
+   - Testing strategy
+   - Error handling approach
+
+Generate final_prompt_json with this structure:
+{
+  "project": {
+    "name": "suggested project name",
+    "tagline": "one-line description",
+    "summary": "2-3 sentence overview",
+    "target_users": ["user type 1", "user type 2"],
+    "value_proposition": "why this project matters"
+  },
+  "requirements": {
+    "core_features": [
+      {
+        "name": "feature name",
+        "description": "what it does",
+        "user_story": "As a [user], I want to [action] so that [benefit]",
+        "acceptance_criteria": ["criteria 1", "criteria 2"],
+        "priority": "P0/P1/P2"
+      }
+    ],
+    "secondary_features": [...],
+    "non_functional": {
+      "performance": "...",
+      "security": "...",
+      "scalability": "..."
+    }
+  },
+  "architecture": {
+    "pattern": "architecture pattern",
+    "tech_stack": {
+      "frontend": { "framework": "...", "version": "...", "key_libraries": [...] },
+      "backend": { "framework": "...", "version": "...", "key_libraries": [...] },
+      "database": { "type": "...", "schema_approach": "..." },
+      "styling": "...",
+      "testing": "..."
+    },
+    "folder_structure": "directory tree as string",
+    "modules": [
+      { "name": "...", "responsibility": "...", "dependencies": [...] }
+    ]
+  },
+  "data_model": {
+    "entities": [
+      {
+        "name": "Entity",
+        "fields": [
+          { "name": "id", "type": "string", "constraints": "primary key, uuid" }
+        ],
+        "relationships": ["has many X", "belongs to Y"]
+      }
+    ],
+    "api_endpoints": [
+      { "method": "GET/POST/PUT/DELETE", "path": "/api/...", "description": "...", "auth_required": true/false }
+    ]
+  },
+  "ui_ux": {
+    "screens": [
+      { "name": "Screen Name", "route": "/path", "description": "...", "components": [...] }
+    ],
+    "navigation": "description of navigation flow",
+    "design_system": {
+      "colors": { "primary": "#...", "secondary": "#...", "accent": "#..." },
+      "typography": { "headings": "...", "body": "..." },
+      "spacing": "...",
+      "dark_mode": true/false
+    }
+  },
+  "implementation_roadmap": {
+    "phase_1": { "name": "Foundation", "tasks": [...], "duration_estimate": "..." },
+    "phase_2": { "name": "Core Features", "tasks": [...], "duration_estimate": "..." },
+    "phase_3": { "name": "Polish", "tasks": [...], "duration_estimate": "..." }
+  },
+  "quality": {
+    "testing": { "unit": "...", "integration": "...", "e2e": "..." },
+    "error_handling": "approach",
+    "logging": "approach",
+    "monitoring": "approach if applicable"
+  },
+  "getting_started": {
+    "prerequisites": [...],
+    "setup_commands": [...],
+    "environment_variables": [...],
+    "first_steps": "what to implement first"
+  }
+}
+
+The final_prompt_text should be a Markdown document that developers can directly paste into an AI coding assistant to start building.
+`;
+  } else if (taskType === TaskType.WRITING) {
+    // Writing - Edit or Compose mode
+    const writingMode = cleanInputs.mode || 'edit';
+
+    if (writingMode === 'edit') {
+      // Edit Mode - Transform existing text
+      const originalText = cleanInputs.original || '';
+      const purpose = cleanInputs.purpose || 'professional';
+      const tone = cleanInputs.tone || 'formal';
+      const outputLang = cleanInputs.outputLang || 'keep';
+      const extraRequirements = cleanInputs.extra || '';
+
+      taskInstructions = `
+TASK: WRITING - EDIT MODE
+
+You are creating a PROMPT that instructs an AI to edit/transform the provided text.
+
+ORIGINAL TEXT:
+"""
+${originalText}
+"""
+
+EDITING REQUIREMENTS:
+- Purpose: ${purpose} (${purpose === 'professional' ? 'make it more professional and polished' : purpose === 'simplify' ? 'simplify language, easier to understand' : purpose === 'fix' ? 'fix grammar, spelling, punctuation errors' : purpose === 'shorten' ? 'condense while keeping key information' : 'expand with more details and examples'})
+- Tone: ${tone}
+- Output Language: ${outputLang === 'keep' ? 'Same as original' : outputLang === 'vi' ? 'Vietnamese' : 'English'}
+${extraRequirements ? `- Additional Requirements: ${extraRequirements}` : ''}
+
+GENERATE A PROMPT that:
+1. Includes the original text
+2. Clearly states what changes to make
+3. Specifies the tone and style
+4. Mentions any constraints (preserve meaning, keep technical terms, etc.)
+
+The prompt should be ready to paste into ChatGPT, Claude, or any AI assistant.
+
+Generate final_prompt_json with:
+{
+  "original_text": "the original text included",
+  "edit_instructions": {
+    "purpose": "${purpose}",
+    "tone": "${tone}",
+    "output_language": "${outputLang}",
+    "specific_changes": ["list of specific edits to make"],
+    "preserve": ["elements to keep unchanged"]
+  },
+  "expected_output": {
+    "format": "same as original / paragraph / bullet points",
+    "length": "similar / shorter / longer than original"
+  },
+  "quality_checks": ["things to verify in the output"]
+}
+`;
+    } else {
+      // Compose Mode - Write new content
+      const contentType = cleanInputs.type || 'email';
+      const tone = cleanInputs.tone || 'formal';
+      const length = cleanInputs.length || 'medium';
+      const outputLang = cleanInputs.language || 'vi';
+      const description = cleanInputs.desc || '';
+      const context = cleanInputs.context || '';
+
+      taskInstructions = `
+TASK: WRITING - COMPOSE MODE
+
+You are creating a PROMPT that instructs an AI to write NEW content from scratch.
+
+CONTENT REQUIREMENTS:
+- Content Type: ${contentType}
+- Description: ${description}
+- Tone: ${tone}
+- Length: ${length} (${length === 'short' ? 'under 100 words' : length === 'medium' ? '100-300 words' : 'over 300 words'})
+- Language: ${outputLang === 'vi' ? 'Vietnamese' : 'English'}
+${context ? `- Context/Keywords: ${context}` : ''}
+
+CONTENT TYPE GUIDELINES:
+${contentType === 'email' ? `
+EMAIL:
+- Clear subject line suggestion
+- Professional greeting
+- Well-structured body (purpose, details, call-to-action)
+- Appropriate sign-off
+- Consider sender-recipient relationship
+` : contentType === 'blog' ? `
+BLOG POST:
+- Catchy headline
+- Hook/intro paragraph
+- Structured sections with subheadings
+- Engaging conclusion with CTA
+- SEO-friendly if relevant
+` : contentType === 'social' ? `
+SOCIAL MEDIA:
+- Attention-grabbing opening
+- Concise, punchy content
+- Relevant hashtags if appropriate
+- Clear CTA
+- Platform-appropriate length
+` : contentType === 'report' ? `
+REPORT:
+- Executive summary
+- Clear sections/headings
+- Data/evidence-based content
+- Conclusions and recommendations
+- Professional formatting
+` : contentType === 'letter' ? `
+LETTER:
+- Formal header (if applicable)
+- Clear purpose stated early
+- Well-organized body
+- Polite closing
+- Appropriate formality level
+` : `
+AD COPY:
+- Attention-grabbing headline
+- Clear value proposition
+- Benefits-focused content
+- Strong call-to-action
+- Urgency if appropriate
+`}
+
+GENERATE A PROMPT that:
+1. Clearly describes what content to create
+2. Provides all necessary context
+3. Specifies tone, style, and length
+4. Includes any keywords or must-include elements
+
+The prompt should be ready to paste into ChatGPT, Claude, or any AI assistant.
+
+Generate final_prompt_json with:
+{
+  "content_type": "${contentType}",
+  "writing_instructions": {
+    "main_purpose": "what this content needs to achieve",
+    "key_messages": ["main points to convey"],
+    "tone": "${tone}",
+    "language": "${outputLang}",
+    "target_audience": "who will read this",
+    "context": "${context || 'general'}"
+  },
+  "structure": {
+    "opening": "how to start",
+    "body": "main content structure",
+    "closing": "how to end",
+    "length_guide": "${length}"
+  },
+  "style_notes": {
+    "vocabulary": "formal/casual/technical",
+    "sentence_structure": "short and punchy / flowing",
+    "formatting": "paragraphs/bullets/mixed"
+  },
+  "must_include": ["keywords or elements that must appear"],
+  "avoid": ["things to avoid"]
+}
+`;
+    }
   }
 
   const promptText = `

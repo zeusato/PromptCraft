@@ -123,7 +123,7 @@ const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose, onKeySaved }
                                 value={inputKey}
                                 onChange={(e) => setInputKey(e.target.value)}
                                 placeholder={existingKey ? t('apikey.placeholder_exist') : t('apikey.placeholder_empty')}
-                                className="w-full bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-3 text-main dark:text-white focus:ring-2 focus:ring-primary focus:bg-white/50 dark:focus:bg-white/10 outline-none pr-10 placeholder-slate-400 dark:placeholder-slate-500 transition-colors"
+                                className="w-full bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-3 text-main dark:text-white focus:ring-2 focus:ring-primary focus:bg-white/50 dark:focus:bg-white/10 outline-none pr-10 hover:border-primary focus:border-primary placeholder-slate-400 dark:placeholder-slate-500 transition-colors"
                             />
                             {existingKey && !inputKey && (
                                 <div className="absolute right-3 top-3 text-green-500 flex items-center gap-1 text-xs bg-green-500/10 px-2 py-0.5 rounded">

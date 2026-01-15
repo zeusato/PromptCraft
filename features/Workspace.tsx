@@ -105,22 +105,24 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
     // --- Render Helpers ---
 
     const renderTabs = () => (
-        <div className="flex md:grid md:grid-cols-5 overflow-x-auto md:overflow-visible p-0 bg-surface border-b border-border sticky top-0 z-10 w-full shadow-none no-scrollbar">
-            {Object.values(TaskType).map(tab => (
+        <div className="flex overflow-x-auto p-0 bg-surface border-b border-border sticky top-0 z-10 w-full shadow-none no-scrollbar">
+            {Object.values(TaskType).filter(t => t !== TaskType.MARKETING && t !== TaskType.DATA).map(tab => (
                 <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`flex-none md:flex-1 flex items-center justify-center py-4 px-4 md:px-1 text-[11px] font-bold uppercase tracking-wider transition-colors duration-200 border-b-2 min-w-[80px] md:min-w-0 ${activeTab === tab
+                    className={`flex-none px-6 py-4 text-[11px] font-bold uppercase tracking-wider transition-colors duration-200 border-b-2 whitespace-nowrap ${activeTab === tab
                         ? 'border-primary text-primary bg-primary/5'
                         : 'border-transparent text-secondary hover:text-main hover:bg-black/5 dark:hover:bg-white/5'
                         }`}
                 >
-                    <span className="whitespace-normal text-center leading-tight">
+                    <span className="leading-tight">
                         {tab === TaskType.RESEARCH && t('tab.research')}
                         {tab === TaskType.IMAGE && t('tab.image')}
                         {tab === TaskType.VIDEO && t('tab.video')}
                         {tab === TaskType.OUTLINE && t('tab.outline')}
                         {tab === TaskType.MUSIC && t('tab.music')}
+                        {tab === TaskType.CODING && t('tab.coding')}
+                        {tab === TaskType.WRITING && t('tab.writing')}
                     </span>
                 </button>
             ))}
@@ -138,7 +140,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                         value="Text"
                         checked={inputs.targetFormat !== 'JSON'}
                         onChange={() => handleInputChange('targetFormat', 'Text')}
-                        className="text-primary focus:ring-primary bg-background border-border"
+                        className="text-primary focus:ring-primary bg-background border-border hover:border-primary focus:border-primary"
                     />
                     <span className="text-sm text-secondary">Text</span>
                 </label>
@@ -149,7 +151,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                         value="JSON"
                         checked={inputs.targetFormat === 'JSON'}
                         onChange={() => handleInputChange('targetFormat', 'JSON')}
-                        className="text-primary focus:ring-primary bg-background border-border"
+                        className="text-primary focus:ring-primary bg-background border-border hover:border-primary focus:border-primary"
                     />
                     <span className="text-sm text-secondary">JSON</span>
                 </label>
@@ -165,7 +167,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                         <div>
                             <label className="block text-sm font-medium text-slate-700 dark:text-slate-400 mb-1">{t('form.topic')}</label>
                             <textarea
-                                className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl p-3 text-main dark:text-white focus:ring-2 focus:ring-primary focus:bg-white dark:focus:bg-white/10 outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
+                                className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary hover:border-primary focus:border-primary rounded-xl p-3 text-main dark:text-white focus:ring-2 focus:ring-primary focus:bg-white dark:focus:bg-white/10 outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
                                 rows={4}
                                 value={inputs.topic || ''}
                                 onChange={e => handleInputChange('topic', e.target.value)}
@@ -175,7 +177,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                         <div>
                             <label className="block text-sm font-medium text-slate-700 dark:text-slate-400 mb-1">{t('form.level')}</label>
                             <select
-                                className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl p-3 text-main dark:text-white focus:bg-white dark:focus:bg-white/10 outline-none transition-colors [&>option]:bg-white dark:[&>option]:bg-slate-900 [&>option]:text-main dark:[&>option]:text-white"
+                                className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-xl p-3 text-main dark:text-white focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary outline-none transition-colors [&>option]:bg-white dark:[&>option]:bg-slate-900 [&>option]:text-main dark:[&>option]:text-white"
                                 value={inputs.depth || 'standard'}
                                 onChange={e => handleInputChange('depth', e.target.value)}
                             >
@@ -191,14 +193,14 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                     type="text"
                                     placeholder={t('form.timeframe')}
                                     value={inputs.timeframe || ''}
-                                    className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm text-main dark:text-white focus:bg-white dark:focus:bg-white/10 outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
+                                    className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg px-3 py-2 text-sm text-main dark:text-white focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
                                     onChange={e => handleInputChange('timeframe', e.target.value)}
                                 />
                                 <input
                                     type="text"
                                     placeholder={t('form.format_output')}
                                     value={inputs.format || ''}
-                                    className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm text-main dark:text-white focus:bg-white dark:focus:bg-white/10 outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
+                                    className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg px-3 py-2 text-sm text-main dark:text-white focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
                                     onChange={e => handleInputChange('format', e.target.value)}
                                 />
                             </div>
@@ -242,7 +244,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                             <input
                                                 type="checkbox"
                                                 checked={inputs.useRefFace || false}
-                                                className="w-5 h-5 rounded-md bg-white/10 border-white/20 text-primary focus:ring-primary focus:ring-offset-0"
+                                                className="w-5 h-5 rounded-md bg-white/10 border-white/20 text-primary focus:ring-primary focus:ring-offset-0 hover:border-primary focus:border-primary"
                                                 onChange={e => handleInputChange('useRefFace', e.target.checked)}
                                             />
                                             <span className="text-sm text-slate-700 dark:text-slate-300 font-medium">{t('form.img.use_ref_face')}</span>
@@ -255,7 +257,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                         {subtype === 'Analyze' ? t('form.img.desc_analyze') : t('form.img.desc_generate')}
                                     </label>
                                     <textarea
-                                        className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl p-3 text-main dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-white/10 focus:border-primary/50 outline-none transition-colors"
+                                        className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-xl p-3 text-main dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary outline-none transition-colors"
                                         rows={3}
                                         value={inputs.description || ''}
                                         onChange={e => handleInputChange('description', e.target.value)}
@@ -266,14 +268,14 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                         )}
 
                         <div className="grid grid-cols-2 gap-3">
-                            <select className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl p-2.5 text-main dark:text-white text-sm outline-none focus:bg-white dark:focus:bg-white/10 transition-colors [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.style || ''} onChange={e => handleInputChange('style', e.target.value)}>
+                            <select className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-xl p-2.5 text-main dark:text-white text-sm outline-none focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary transition-colors [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.style || ''} onChange={e => handleInputChange('style', e.target.value)}>
                                 <option value="">{t('form.img.style')}</option>
                                 <option value="photorealistic">Photorealistic</option>
                                 <option value="anime">Anime</option>
                                 <option value="oil painting">Oil Painting</option>
                                 <option value="3d render">3D Render</option>
                             </select>
-                            <select className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl p-2.5 text-main dark:text-white text-sm outline-none focus:bg-white dark:focus:bg-white/10 transition-colors [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.ratio || '1:1'} onChange={e => handleInputChange('ratio', e.target.value)}>
+                            <select className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-xl p-2.5 text-main dark:text-white text-sm outline-none focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary transition-colors [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.ratio || '1:1'} onChange={e => handleInputChange('ratio', e.target.value)}>
                                 <option value="1:1">1:1</option>
                                 <option value="16:9">16:9</option>
                                 <option value="9:16">9:16</option>
@@ -282,7 +284,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                             </select>
                         </div>
                         <label className="flex items-center gap-2 cursor-pointer group">
-                            <input type="checkbox" checked={inputs.inspire || false} className="w-4 h-4 rounded bg-white/10 border-white/20 text-primary focus:ring-primary" onChange={e => handleInputChange('inspire', e.target.checked)} />
+                            <input type="checkbox" checked={inputs.inspire || false} className="w-4 h-4 rounded bg-white/10 border-white/20 text-primary focus:ring-primary hover:border-primary focus:border-primary" onChange={e => handleInputChange('inspire', e.target.checked)} />
                             <span className="text-sm text-slate-500 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">{t('form.img.inspire')}</span>
                         </label>
 
@@ -319,14 +321,14 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                             <div className="space-y-3 bg-white/5 p-4 rounded-xl border border-white/10">
                                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-400">{t('form.vid.base_prompt')}</label>
                                 <textarea
-                                    className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-3 text-main dark:text-white text-sm focus:bg-white dark:focus:bg-white/10 outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
+                                    className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-3 text-main dark:text-white text-sm focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
                                     rows={3}
                                     value={inputs.basePrompt || ''}
                                     onChange={e => handleInputChange('basePrompt', e.target.value)}
                                     placeholder={t('form.vid.base_prompt_ph')}
                                 />
                                 <label className="flex items-center gap-2 cursor-pointer">
-                                    <input type="checkbox" checked={inputs.keepConsistency !== false} className="w-4 h-4 rounded bg-white/10 border-white/20 text-primary" onChange={e => handleInputChange('keepConsistency', e.target.checked)} />
+                                    <input type="checkbox" checked={inputs.keepConsistency !== false} className="w-4 h-4 rounded bg-white/10 border-white/20 text-primary hover:border-primary focus:border-primary" onChange={e => handleInputChange('keepConsistency', e.target.checked)} />
                                     <span className="text-sm text-slate-700 dark:text-slate-300">{t('form.vid.consistency')}</span>
                                 </label>
                             </div>
@@ -338,7 +340,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                 <div>
                                     <label className="block text-sm font-medium text-slate-700 dark:text-slate-400 mb-1">{t('form.vid.extend_what')}</label>
                                     <textarea
-                                        className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl p-3 text-main dark:text-white focus:bg-white dark:focus:bg-white/10 outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
+                                        className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-xl p-3 text-main dark:text-white focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
                                         rows={2}
                                         value={inputs.extensionIdea || ''}
                                         onChange={e => handleInputChange('extensionIdea', e.target.value)}
@@ -350,7 +352,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                     <div>
                                         <label className="block text-sm font-medium text-slate-700 dark:text-slate-400 mb-1">{t('form.vid.idea')}</label>
                                         <textarea
-                                            className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl p-3 text-main dark:text-white focus:bg-white dark:focus:bg-white/10 outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
+                                            className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-xl p-3 text-main dark:text-white focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
                                             rows={2}
                                             value={inputs.description || ''}
                                             onChange={e => handleInputChange('description', e.target.value)}
@@ -362,18 +364,18 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                         <div className="grid grid-cols-2 gap-3">
                                             <div>
                                                 <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.vid.env')}</label>
-                                                <input type="text" placeholder="Cyberpunk city..." className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2.5 text-main dark:text-white text-sm focus:bg-white dark:focus:bg-white/10 outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500" value={inputs.context || ''} onChange={e => handleInputChange('context', e.target.value)} />
+                                                <input type="text" placeholder="Cyberpunk city..." className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2.5 text-main dark:text-white text-sm focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500" value={inputs.context || ''} onChange={e => handleInputChange('context', e.target.value)} />
                                             </div>
                                             <div>
                                                 <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.vid.subject')}</label>
-                                                <input type="text" placeholder="A robot..." className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2.5 text-main dark:text-white text-sm focus:bg-white dark:focus:bg-white/10 outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500" value={inputs.subject || ''} onChange={e => handleInputChange('subject', e.target.value)} />
+                                                <input type="text" placeholder="A robot..." className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2.5 text-main dark:text-white text-sm focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500" value={inputs.subject || ''} onChange={e => handleInputChange('subject', e.target.value)} />
                                             </div>
                                         </div>
                                     )}
 
                                     <div>
                                         <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.vid.audio_gen')}</label>
-                                        <input type="text" placeholder="Music, SFX..." className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2.5 text-main dark:text-white text-sm focus:bg-white dark:focus:bg-white/10 outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500" value={inputs.audio_general || ''} onChange={e => handleInputChange('audio_general', e.target.value)} />
+                                        <input type="text" placeholder="Music, SFX..." className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2.5 text-main dark:text-white text-sm focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500" value={inputs.audio_general || ''} onChange={e => handleInputChange('audio_general', e.target.value)} />
                                     </div>
                                 </>
                             )}
@@ -382,7 +384,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                             <div className="grid grid-cols-3 gap-2">
                                 <div>
                                     <label className="block text-[10px] text-slate-500 dark:text-slate-400 mb-1 uppercase font-bold">{t('form.vid.duration')}</label>
-                                    <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2 text-main dark:text-white text-sm outline-none focus:bg-white dark:focus:bg-white/10 [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.duration || '5s'} onChange={e => handleInputChange('duration', e.target.value)}>
+                                    <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2 text-main dark:text-white text-sm outline-none focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.duration || '5s'} onChange={e => handleInputChange('duration', e.target.value)}>
                                         <option value="5s">5s</option>
                                         <option value="8s">8s</option>
                                         <option value="10s">10s</option>
@@ -390,7 +392,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                 </div>
                                 <div>
                                     <label className="block text-[10px] text-slate-500 dark:text-slate-400 mb-1 uppercase font-bold">{t('form.img.ratio')}</label>
-                                    <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2 text-main dark:text-white text-sm outline-none focus:bg-white dark:focus:bg-white/10 [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.ratio || '16:9'} onChange={e => handleInputChange('ratio', e.target.value)}>
+                                    <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2 text-main dark:text-white text-sm outline-none focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.ratio || '16:9'} onChange={e => handleInputChange('ratio', e.target.value)}>
                                         <option value="16:9">16:9</option>
                                         <option value="9:16">9:16</option>
                                         <option value="1:1">1:1</option>
@@ -398,7 +400,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                 </div>
                                 <div>
                                     <label className="block text-[10px] text-slate-500 dark:text-slate-400 mb-1 uppercase font-bold">{t('form.vid.count')}</label>
-                                    <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2 text-main dark:text-white text-sm outline-none focus:bg-white dark:focus:bg-white/10 [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.count || '1'} onChange={e => handleInputChange('count', e.target.value)}>
+                                    <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2 text-main dark:text-white text-sm outline-none focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.count || '1'} onChange={e => handleInputChange('count', e.target.value)}>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -424,7 +426,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                     <div className="grid grid-cols-2 gap-3">
                                         <div>
                                             <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.vid.cam_angle')}</label>
-                                            <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2 text-main dark:text-white text-xs outline-none [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.camera_angle || ''} onChange={e => handleInputChange('camera_angle', e.target.value)}>
+                                            <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2 text-main dark:text-white text-xs outline-none focus:ring-2 focus:ring-primary [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.camera_angle || ''} onChange={e => handleInputChange('camera_angle', e.target.value)}>
                                                 <option value="">Auto</option>
                                                 <option value="wide">Wide</option>
                                                 <option value="medium">Medium</option>
@@ -435,7 +437,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                         </div>
                                         <div>
                                             <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.vid.cam_motion')}</label>
-                                            <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2 text-main dark:text-white text-xs outline-none [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.camera_motion || ''} onChange={e => handleInputChange('camera_motion', e.target.value)}>
+                                            <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2 text-main dark:text-white text-xs outline-none focus:ring-2 focus:ring-primary [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.camera_motion || ''} onChange={e => handleInputChange('camera_motion', e.target.value)}>
                                                 <option value="">Auto</option>
                                                 <option value="static">Static</option>
                                                 <option value="pan_left">Pan Left</option>
@@ -448,18 +450,18 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                     </div>
 
                                     <div className="grid grid-cols-2 gap-3">
-                                        <input type="text" placeholder={t('form.vid.lighting')} className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2 text-main dark:text-white text-xs outline-none focus:bg-white dark:focus:bg-white/10 placeholder-slate-400 dark:placeholder-slate-500" value={inputs.lighting || ''} onChange={e => handleInputChange('lighting', e.target.value)} />
-                                        <input type="text" placeholder={t('form.img.style')} className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2 text-main dark:text-white text-xs outline-none focus:bg-white dark:focus:bg-white/10 placeholder-slate-400 dark:placeholder-slate-500" value={inputs.style || ''} onChange={e => handleInputChange('style', e.target.value)} />
+                                        <input type="text" placeholder={t('form.vid.lighting')} className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2 text-main dark:text-white text-xs outline-none focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary placeholder-slate-400 dark:placeholder-slate-500" value={inputs.lighting || ''} onChange={e => handleInputChange('lighting', e.target.value)} />
+                                        <input type="text" placeholder={t('form.img.style')} className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2 text-main dark:text-white text-xs outline-none focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary placeholder-slate-400 dark:placeholder-slate-500" value={inputs.style || ''} onChange={e => handleInputChange('style', e.target.value)} />
                                     </div>
 
                                     <div>
                                         <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.vid.audio_det')}</label>
-                                        <textarea className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2 text-main dark:text-white text-xs outline-none focus:bg-white dark:focus:bg-white/10" rows={2} value={inputs.audio_detailed || ''} onChange={e => handleInputChange('audio_detailed', e.target.value)} />
+                                        <textarea className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2 text-main dark:text-white text-xs outline-none focus:bg-white dark:focus:bg-white/10" rows={2} value={inputs.audio_detailed || ''} onChange={e => handleInputChange('audio_detailed', e.target.value)} />
                                     </div>
 
                                     <div>
                                         <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.vid.negative')}</label>
-                                        <input type="text" className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2 text-main dark:text-white text-xs outline-none focus:bg-white dark:focus:bg-white/10" value={inputs.negative || ''} onChange={e => handleInputChange('negative', e.target.value)} />
+                                        <input type="text" className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2 text-main dark:text-white text-xs outline-none focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary" value={inputs.negative || ''} onChange={e => handleInputChange('negative', e.target.value)} />
                                     </div>
                                 </div>
                             )}
@@ -475,7 +477,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                         <div>
                             <label className="block text-sm font-medium text-slate-700 dark:text-slate-400 mb-1">{t('form.outline.topic')}</label>
                             <textarea
-                                className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl p-3 text-main dark:text-white focus:bg-white dark:focus:bg-white/10 focus:ring-primary outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
+                                className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-xl p-3 text-main dark:text-white focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
                                 rows={3}
                                 value={inputs.topic || ''}
                                 onChange={e => handleInputChange('topic', e.target.value)}
@@ -483,11 +485,11 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                             />
                         </div>
                         <div className="grid grid-cols-2 gap-3">
-                            <input type="text" placeholder={t('form.outline.audience')} value={inputs.audience || ''} className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2.5 text-main dark:text-white text-sm placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-white/10 outline-none" onChange={e => handleInputChange('audience', e.target.value)} />
-                            <input type="text" placeholder={t('form.outline.goal')} value={inputs.goal || ''} className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2.5 text-main dark:text-white text-sm placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-white/10 outline-none" onChange={e => handleInputChange('goal', e.target.value)} />
+                            <input type="text" placeholder={t('form.outline.audience')} value={inputs.audience || ''} className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2.5 text-main dark:text-white text-sm placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary outline-none" onChange={e => handleInputChange('audience', e.target.value)} />
+                            <input type="text" placeholder={t('form.outline.goal')} value={inputs.goal || ''} className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2.5 text-main dark:text-white text-sm placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary outline-none" onChange={e => handleInputChange('goal', e.target.value)} />
                         </div>
                         <label className="flex items-center gap-2 cursor-pointer group">
-                            <input type="checkbox" checked={inputs.auto_fill || false} className="w-4 h-4 rounded bg-white/10 border-white/20 text-primary focus:ring-primary" onChange={e => handleInputChange('auto_fill', e.target.checked)} />
+                            <input type="checkbox" checked={inputs.auto_fill || false} className="w-4 h-4 rounded bg-white/10 border-white/20 text-primary focus:ring-primary hover:border-primary focus:border-primary" onChange={e => handleInputChange('auto_fill', e.target.checked)} />
                             <span className="text-sm text-slate-500 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">{t('form.outline.autofill')}</span>
                         </label>
 
@@ -500,7 +502,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                         <div>
                             <label className="block text-sm font-medium text-slate-700 dark:text-slate-400 mb-1">{t('form.music.topic')}</label>
                             <textarea
-                                className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl p-3 text-main dark:text-white focus:bg-white dark:focus:bg-white/10 outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
+                                className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-xl p-3 text-main dark:text-white focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
                                 rows={3}
                                 value={inputs.topic || ''}
                                 onChange={e => handleInputChange('topic', e.target.value)}
@@ -508,14 +510,265 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                             />
                         </div>
                         <div className="grid grid-cols-2 gap-3">
-                            <input type="text" placeholder={t('form.music.genre')} value={inputs.genre || ''} className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2.5 text-main dark:text-white text-sm placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-white/10 outline-none" onChange={e => handleInputChange('genre', e.target.value)} />
-                            <input type="text" placeholder={t('form.music.mood')} value={inputs.mood || ''} className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2.5 text-main dark:text-white text-sm placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-white/10 outline-none" onChange={e => handleInputChange('mood', e.target.value)} />
+                            <input type="text" placeholder={t('form.music.genre')} value={inputs.genre || ''} className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2.5 text-main dark:text-white text-sm placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary outline-none" onChange={e => handleInputChange('genre', e.target.value)} />
+                            <input type="text" placeholder={t('form.music.mood')} value={inputs.mood || ''} className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2.5 text-main dark:text-white text-sm placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary outline-none" onChange={e => handleInputChange('mood', e.target.value)} />
                         </div>
                         <label className="flex items-center gap-2 cursor-pointer group">
-                            <input type="checkbox" checked={inputs.suno_ready || false} className="w-4 h-4 rounded bg-white/10 border-white/20 text-primary focus:ring-primary" onChange={e => handleInputChange('suno_ready', e.target.checked)} />
+                            <input type="checkbox" checked={inputs.suno_ready || false} className="w-4 h-4 rounded bg-white/10 border-white/20 text-primary focus:ring-primary hover:border-primary focus:border-primary" onChange={e => handleInputChange('suno_ready', e.target.checked)} />
                             <span className="text-sm text-slate-500 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">{t('form.music.suno')}</span>
                         </label>
 
+                    </div>
+                );
+
+            case TaskType.CODING:
+                return (
+                    <div className="space-y-4">
+                        <div>
+                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-400 mb-1">{t('form.coding.idea')}</label>
+                            <textarea
+                                className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-xl p-3 text-main dark:text-white focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
+                                rows={4}
+                                value={inputs.idea || ''}
+                                onChange={e => handleInputChange('idea', e.target.value)}
+                                placeholder={t('form.coding.idea_ph')}
+                            />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-3">
+                            <div>
+                                <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.coding.platform')}</label>
+                                <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2.5 text-main dark:text-white text-sm outline-none focus:ring-2 focus:ring-primary [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.platform || 'web'} onChange={e => handleInputChange('platform', e.target.value)}>
+                                    <option value="web">{t('form.coding.platform.web')}</option>
+                                    <option value="mobile">{t('form.coding.platform.mobile')}</option>
+                                    <option value="desktop">{t('form.coding.platform.desktop')}</option>
+                                    <option value="cli">{t('form.coding.platform.cli')}</option>
+                                    <option value="api">{t('form.coding.platform.api')}</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.coding.framework')}</label>
+                                <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2.5 text-main dark:text-white text-sm outline-none focus:ring-2 focus:ring-primary [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.framework || 'React'} onChange={e => handleInputChange('framework', e.target.value)}>
+                                    <option value="React">React</option>
+                                    <option value="Vue">Vue</option>
+                                    <option value="Next.js">Next.js</option>
+                                    <option value="Flutter">Flutter</option>
+                                    <option value="React Native">React Native</option>
+                                    <option value="Kotlin">Kotlin</option>
+                                    <option value="Swift">Swift</option>
+                                    <option value="Python">Python</option>
+                                    <option value="Node.js">Node.js</option>
+                                    <option value="Go">Go</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-3">
+                            <div>
+                                <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.coding.database')}</label>
+                                <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2.5 text-main dark:text-white text-sm outline-none focus:ring-2 focus:ring-primary [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.database || 'none'} onChange={e => handleInputChange('database', e.target.value)}>
+                                    <option value="none">{t('form.coding.database.none')}</option>
+                                    <option value="SQLite">SQLite</option>
+                                    <option value="PostgreSQL">PostgreSQL</option>
+                                    <option value="MongoDB">MongoDB</option>
+                                    <option value="Firebase">Firebase</option>
+                                    <option value="Supabase">Supabase</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.coding.styling')}</label>
+                                <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2.5 text-main dark:text-white text-sm outline-none focus:ring-2 focus:ring-primary [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.styling || 'tailwind'} onChange={e => handleInputChange('styling', e.target.value)}>
+                                    <option value="tailwind">Tailwind CSS</option>
+                                    <option value="css-modules">CSS Modules</option>
+                                    <option value="styled-components">Styled Components</option>
+                                    <option value="none">{t('form.coding.styling.none')}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.coding.size')}</label>
+                            <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2.5 text-main dark:text-white text-sm outline-none focus:ring-2 focus:ring-primary [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.size || 'mvp'} onChange={e => handleInputChange('size', e.target.value)}>
+                                <option value="mvp">{t('form.coding.size.mvp')}</option>
+                                <option value="medium">{t('form.coding.size.medium')}</option>
+                                <option value="complex">{t('form.coding.size.complex')}</option>
+                            </select>
+                        </div>
+
+                        <label className="flex items-center gap-2 cursor-pointer group">
+                            <input type="checkbox" checked={inputs.auth || false} className="w-4 h-4 rounded bg-white/10 border-white/20 text-primary focus:ring-primary hover:border-primary focus:border-primary" onChange={e => handleInputChange('auth', e.target.checked)} />
+                            <span className="text-sm text-slate-500 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">{t('form.coding.auth')}</span>
+                        </label>
+
+                        <div className="bg-white/5 p-4 rounded-xl border border-white/10">
+                            <p className="text-xs font-bold text-slate-500 dark:text-slate-400 mb-3 uppercase tracking-wider">{t('form.coding.features')}</p>
+                            <div className="grid grid-cols-2 gap-2">
+                                {['pwa', 'dark', 'i18n', 'realtime', 'offline', 'cicd'].map(feat => (
+                                    <label key={feat} className="flex items-center gap-2 cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            checked={(inputs.features || []).includes(feat)}
+                                            className="w-4 h-4 rounded bg-white/10 border-white/20 text-primary focus:ring-primary hover:border-primary focus:border-primary"
+                                            onChange={e => {
+                                                const current = inputs.features || [];
+                                                if (e.target.checked) {
+                                                    handleInputChange('features', [...current, feat]);
+                                                } else {
+                                                    handleInputChange('features', current.filter((f: string) => f !== feat));
+                                                }
+                                            }}
+                                        />
+                                        <span className="text-xs text-slate-500 dark:text-slate-400">{t(`form.coding.features.${feat}`)}</span>
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                );
+
+            case TaskType.WRITING:
+                return (
+                    <div className="space-y-4">
+                        {/* Mode Toggle */}
+                        <div className="flex gap-2 bg-slate-100 dark:bg-black/20 p-1.5 rounded-xl border border-slate-200 dark:border-white/5">
+                            {[
+                                { id: 'edit', label: t('form.writing.mode.edit') },
+                                { id: 'compose', label: t('form.writing.mode.compose') }
+                            ].map(mode => (
+                                <button
+                                    key={mode.id}
+                                    onClick={() => { handleInputChange('mode', mode.id); }}
+                                    className={`flex-1 py-2 text-xs rounded-lg font-bold transition-all duration-300 ${(inputs.mode || 'edit') === mode.id ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-white/5'}`}
+                                >
+                                    {mode.label}
+                                </button>
+                            ))}
+                        </div>
+
+                        {(inputs.mode || 'edit') === 'edit' ? (
+                            /* Edit Mode */
+                            <>
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-400 mb-1">{t('form.writing.original')}</label>
+                                    <textarea
+                                        className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-xl p-3 text-main dark:text-white focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
+                                        rows={5}
+                                        value={inputs.original || ''}
+                                        onChange={e => handleInputChange('original', e.target.value)}
+                                        placeholder={t('form.writing.original_ph')}
+                                    />
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.writing.purpose')}</label>
+                                        <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2.5 text-main dark:text-white text-sm outline-none focus:ring-2 focus:ring-primary [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.purpose || 'professional'} onChange={e => handleInputChange('purpose', e.target.value)}>
+                                            <option value="professional">{t('form.writing.purpose.professional')}</option>
+                                            <option value="simplify">{t('form.writing.purpose.simplify')}</option>
+                                            <option value="fix">{t('form.writing.purpose.fix')}</option>
+                                            <option value="shorten">{t('form.writing.purpose.shorten')}</option>
+                                            <option value="expand">{t('form.writing.purpose.expand')}</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.writing.tone')}</label>
+                                        <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2.5 text-main dark:text-white text-sm outline-none focus:ring-2 focus:ring-primary [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.tone || 'formal'} onChange={e => handleInputChange('tone', e.target.value)}>
+                                            <option value="formal">{t('form.writing.tone.formal')}</option>
+                                            <option value="casual">{t('form.writing.tone.casual')}</option>
+                                            <option value="friendly">{t('form.writing.tone.friendly')}</option>
+                                            <option value="academic">{t('form.writing.tone.academic')}</option>
+                                            <option value="business">{t('form.writing.tone.business')}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.writing.output_lang')}</label>
+                                    <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2.5 text-main dark:text-white text-sm outline-none focus:ring-2 focus:ring-primary [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.outputLang || 'keep'} onChange={e => handleInputChange('outputLang', e.target.value)}>
+                                        <option value="keep">{t('form.writing.output_lang.keep')}</option>
+                                        <option value="vi">{t('form.writing.output_lang.vi')}</option>
+                                        <option value="en">{t('form.writing.output_lang.en')}</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.writing.extra')}</label>
+                                    <input
+                                        type="text"
+                                        className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2.5 text-main dark:text-white text-sm focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary outline-none placeholder-slate-400 dark:placeholder-slate-500"
+                                        value={inputs.extra || ''}
+                                        onChange={e => handleInputChange('extra', e.target.value)}
+                                        placeholder={t('form.writing.extra_ph')}
+                                    />
+                                </div>
+                            </>
+                        ) : (
+                            /* Compose Mode */
+                            <>
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-400 mb-1">{t('form.writing.desc')}</label>
+                                    <textarea
+                                        className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-xl p-3 text-main dark:text-white focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
+                                        rows={4}
+                                        value={inputs.desc || ''}
+                                        onChange={e => handleInputChange('desc', e.target.value)}
+                                        placeholder={t('form.writing.desc_ph')}
+                                    />
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.writing.type')}</label>
+                                        <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2.5 text-main dark:text-white text-sm outline-none focus:ring-2 focus:ring-primary [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.type || 'email'} onChange={e => handleInputChange('type', e.target.value)}>
+                                            <option value="email">{t('form.writing.type.email')}</option>
+                                            <option value="blog">{t('form.writing.type.blog')}</option>
+                                            <option value="social">{t('form.writing.type.social')}</option>
+                                            <option value="report">{t('form.writing.type.report')}</option>
+                                            <option value="letter">{t('form.writing.type.letter')}</option>
+                                            <option value="ad">{t('form.writing.type.ad')}</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.writing.tone')}</label>
+                                        <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2.5 text-main dark:text-white text-sm outline-none focus:ring-2 focus:ring-primary [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.tone || 'formal'} onChange={e => handleInputChange('tone', e.target.value)}>
+                                            <option value="formal">{t('form.writing.tone.formal')}</option>
+                                            <option value="casual">{t('form.writing.tone.casual')}</option>
+                                            <option value="persuasive">{t('form.writing.tone.persuasive')}</option>
+                                            <option value="informative">{t('form.writing.tone.informative')}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.writing.length')}</label>
+                                        <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2.5 text-main dark:text-white text-sm outline-none focus:ring-2 focus:ring-primary [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.length || 'medium'} onChange={e => handleInputChange('length', e.target.value)}>
+                                            <option value="short">{t('form.writing.length.short')}</option>
+                                            <option value="medium">{t('form.writing.length.medium')}</option>
+                                            <option value="long">{t('form.writing.length.long')}</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.writing.output_lang')}</label>
+                                        <select className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2.5 text-main dark:text-white text-sm outline-none focus:ring-2 focus:ring-primary [&>option]:bg-white dark:[&>option]:bg-slate-900" value={inputs.language || 'vi'} onChange={e => handleInputChange('language', e.target.value)}>
+                                            <option value="vi">{t('form.writing.output_lang.vi')}</option>
+                                            <option value="en">{t('form.writing.output_lang.en')}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label className="block text-xs text-slate-700 dark:text-slate-400 mb-1">{t('form.writing.context')}</label>
+                                    <textarea
+                                        className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg p-2.5 text-main dark:text-white text-sm focus:bg-white dark:focus:bg-white/10 outline-none placeholder-slate-400 dark:placeholder-slate-500"
+                                        rows={2}
+                                        value={inputs.context || ''}
+                                        onChange={e => handleInputChange('context', e.target.value)}
+                                        placeholder={t('form.writing.context_ph')}
+                                    />
+                                </div>
+                            </>
+                        )}
                     </div>
                 );
 
@@ -544,13 +797,13 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                 <div className="absolute top-0 right-0 p-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10 bg-gradient-to-l from-white/90 to-transparent dark:from-black/80">
                     <button
                         onClick={() => setOutputMode(PromptFormat.TEXT)}
-                        className={`px-3 py-1 text-xs rounded-full font-bold backdrop-blur-md border border-slate-200 dark:border-white/10 transition-colors ${outputMode === PromptFormat.TEXT ? 'bg-primary text-white' : 'bg-white/80 dark:bg-black/40 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
+                        className={`px-3 py-1 text-xs rounded-full font-bold backdrop-blur-md border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary transition-colors ${outputMode === PromptFormat.TEXT ? 'bg-primary text-white' : 'bg-white/80 dark:bg-black/40 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
                     >
                         Text
                     </button>
                     <button
                         onClick={() => setOutputMode(PromptFormat.JSON)}
-                        className={`px-3 py-1 text-xs rounded-full font-bold backdrop-blur-md border border-slate-200 dark:border-white/10 transition-colors ${outputMode === PromptFormat.JSON ? 'bg-primary text-white' : 'bg-white/80 dark:bg-black/40 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
+                        className={`px-3 py-1 text-xs rounded-full font-bold backdrop-blur-md border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary transition-colors ${outputMode === PromptFormat.JSON ? 'bg-primary text-white' : 'bg-white/80 dark:bg-black/40 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
                     >
                         JSON
                     </button>
@@ -562,12 +815,12 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                     )}
                     <button
                         onClick={() => copyToClipboard(outputMode === PromptFormat.TEXT ? output.final_prompt_text : JSON.stringify(output.final_prompt_json || output, null, 2))}
-                        className="bg-white/80 dark:bg-black/40 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white p-1.5 rounded-full backdrop-blur-md border border-slate-200 dark:border-white/10 transition-colors"
+                        className="bg-white/80 dark:bg-black/40 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white p-1.5 rounded-full backdrop-blur-md border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary transition-colors"
                         title={t('common.copy')}
                     >
                         <span className="material-symbols-rounded text-sm">content_copy</span>
                     </button>
-                    <button className="bg-white/80 dark:bg-black/40 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white p-1.5 rounded-full backdrop-blur-md border border-slate-200 dark:border-white/10 transition-colors" title={t('common.download')}>
+                    <button className="bg-white/80 dark:bg-black/40 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white p-1.5 rounded-full backdrop-blur-md border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary transition-colors" title={t('common.download')}>
                         <span className="material-symbols-rounded text-sm">download</span>
                     </button>
                 </div>
@@ -648,7 +901,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                                     {/* Vietnamese Section */}
                                                     <div className="space-y-2">
                                                         <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                                                            <h3 className="text-purple-400 font-bold text-sm uppercase tracking-wider">Tiếng Việt</h3>
+                                                            <h3 className="text-primary font-bold text-sm uppercase tracking-wider">Tiếng Việt</h3>
                                                             <button
                                                                 onClick={() => copyToClipboard(vnPart)}
                                                                 className="text-xs text-slate-400 hover:text-white flex items-center gap-1 transition-colors bg-white/5 hover:bg-white/10 px-2 py-1 rounded-lg"
@@ -656,7 +909,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                                                 <span className="material-symbols-rounded text-sm">content_copy</span> Copy
                                                             </button>
                                                         </div>
-                                                        <div className="font-mono text-sm leading-relaxed whitespace-pre-wrap text-slate-600 dark:text-slate-300 pl-4 border-l-2 border-purple-500/30">
+                                                        <div className="font-mono text-sm leading-relaxed whitespace-pre-wrap text-slate-600 dark:text-slate-300 pl-4 border-l-2 border-primary/30">
                                                             {vnPart}
                                                         </div>
                                                     </div>
@@ -731,7 +984,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                     <button
                         onClick={handleGenerate}
                         disabled={loading}
-                        className="flex-1 bg-gradient-to-r from-primary to-purple-600 hover:from-primary-hover hover:to-purple-700 text-white font-bold py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-neon group"
+                        className="flex-1 bg-primary hover:bg-primary-hover text-white font-bold py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-neon group"
                     >
                         {loading ? (
                             <>
@@ -806,7 +1059,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                                 </button>
                                                 <button
                                                     onClick={() => copyToClipboard(vnPart)}
-                                                    className="flex-1 bg-slate-900 dark:bg-purple-500/20 border border-purple-500/30 hover:bg-purple-500/30 text-white font-bold text-sm py-4 rounded-xl transition-all active:scale-95 flex items-center justify-center gap-2"
+                                                    className="flex-1 bg-slate-900 dark:bg-primary/20 border border-primary/30 hover:bg-primary/30 text-white font-bold text-sm py-4 rounded-xl transition-all active:scale-95 flex items-center justify-center gap-2"
                                                 >
                                                     <span className="material-symbols-rounded text-xl">content_copy</span>
                                                     Copy VN
