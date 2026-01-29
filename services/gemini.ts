@@ -68,107 +68,48 @@ OUTPUT MUST BE VALID JSON matching this exact structure:
   if (taskType === TaskType.IMAGE) {
     if (subtype === 'Analyze') {
       taskInstructions = `
-TASK: IMAGE ANALYSIS
+TASK: DEEP FORENSIC IMAGE ANALYSIS & RECREATION
 
-You are an expert image analyzer. Your task is to analyze the input image and produce a structured JSON description that represents a valid prompt to recreate this image with high fidelity.
+You are a Master Photographer, Cinematographer, and Forensic Image Analyst.
+Your objective is to reverse-engineer the input image with EXTREME FIDELITY so that it can be perfectly recreated by a text-to-image model (Midjourney v6, Flux, DALL-E 3).
 
-You MUST return the result in the 'final_prompt_json' field following this EXACT structure:
+**YOUR ANALYSIS PROCESS (Deep Thinking):**
+1.  **SUBJECT & POSE:** Analyze the body language down to the finger placement. Is the spine curved? Where is the weight distribution? What is the exact angle of the head? Describe the skeletal structure of the pose.
+2.  **CAMERA & LENS (CRITICAL):**
+    *   **Focal Length & Aperture:** (e.g., 85mm f/1.4, 35mm f/2.8).
+    *   **Camera Distance:** (e.g., Extreme Close-up, Medium Shot, Cowboy Shot, Full Body Shot).
+    *   **Camera Angle/Height:** (e.g., Eye-level, Low Angle looking up, High Angle looking down, Dutch Tilt).
+    *   **Relative Position:** (e.g., Frontal view, 3/4 Profile, Side Profile, Over-the-shoulder).
+3.  **LIGHTING:** Analyze the lighting diagram. Where is the Key Light? Is there a Rim Light? Fill Light? What is the Color Temperature (Kelvin)? Is the light hard or soft?
+4.  **ENVIRONMENT:** scanning the background like a detective. List every prop, texture, and spatial relationship.
 
-{
-  "task": "create_realistic_cinematic_portrait_16_9",
-  "scene": {
-    "setting": "outdoor landscape portrait with an epic, majestic backdrop...",
-    "environment": {
-      "background_scale": "very large, grand background...",
-      "background_elements": ["list of elements..."],
-      "foreground_elements": ["list of elements..."],
-      "color_story": {
-        "dominant_colors": ["..."],
-        "accent_colors": ["..."],
-        "overall_tone": "..."
-      }
-    },
-    "lighting": {
-      "type": "...",
-      "direction": "...",
-      "quality": "...",
-      "mood": "..."
-    },
-    "weather": {
-      "atmosphere": "...",
-      "visibility": "..."
+**OUTPUT INSTRUCTIONS:**
+-   **Do NOT** be vague. Avoid words like "maybe" or "standard". Be decisive.
+-   **final_prompt_text**: This must be a "Mega-Prompt". Structure it:
+    **[Shot Type & Camera Angle] + [Subject & Precise Pose] + [Detailed Clothing] + [Complex Environment] + [Lighting & Atmosphere] + [Technical Specs (Lens, Aperture)]**.
+    *Example: "Low-angle full-body shot from a frontal view of..."*
+-   **final_prompt_json**: Use this structure to capture your deep analysis.
+    {
+       "forensic_analysis": {
+          "subject_pose": "...",
+          "camera_gear": "...",
+          "lighting_setup": "..."
+       },
+       "midjourney_prompt": "...",
+       "notes": "..."
     }
-  },
-  "character": {
-    "count": 1,
-    "placement_in_frame": {
-      "rule": "subject occupies only 1/4 of the frame...",
-      "position": "..."
-    },
-    "appearance": {
-      "gender_presentation": "...",
-      "age_range": "...",
-      "body_type": "...",
-      "face_proportion_notes": "...",
-      "hair": { "style": "...", "color": "..." },
-      "facial_hair": { "style": "..." },
-      "wardrobe": {
-        "style": "...",
-        "options": ["..."],
-        "notes": "..."
-      },
-      "accessories": ["..."]
-    },
-    "expression": "...",
-    "pose": {
-      "body_position": "...",
-      "head": "...",
-      "hands": "...",
-      "posture": "..."
-    }
-  },
-  "composition": {
-    "aspect_ratio": "...",
-    "framing": "...",
-    "rule_of_thirds": "...",
-    "depth_layers": ["..."],
-    "leading_lines": ["..."],
-    "avoid": ["..."]
-  },
-  "camera": {
-    "camera_type": "...",
-    "lens": "...",
-    "distance": "...",
-    "aperture": "...",
-    "focus": "...",
-    "exposure": "..."
-  },
-  "style": {
-    "art_type": "...",
-    "contrast": "...",
-    "color_grading": "...",
-    "post_processing": ["..."]
-  },
-  "negative_prompt": ["..."],
-  "generation_rules": {
-    "layout_lock": "...",
-    "background_lock": "...",
-    "body_lock": "...",
-    "no_glasses_rule": "...",
-    "no_text_rule": "..."
-  },
-  "note_for_model": "..." 
-}
 
-**IMPORTANT INSTRUCTION FOR 'note_for_model':**
-Check the user input "useRefFace" (Use Reference Face). 
-- IF "useRefFace" is TRUE (or checked): You MUST set "note_for_model" to exactly:
-  "⚠️ A reference face image will be attached. Replace the subject’s face with the reference face at MAXIMUM identity fidelity (facial structure, eyes, nose, lips, skin tone). Keep head/face size natural (no oversized face). Maintain the wide 16:9 composition with the subject small on the RIGHT (only 1/4 frame) and the majestic landscape dominating the LEFT/background. NO glasses. Ensure lighting and color grading match the environment naturally and the swapped face blends seamlessly."
-- IF "useRefFace" is FALSE: Set "note_for_model" to null or an empty string.
+**CRITICAL: FACE REFERENCE HANDLING**
+Status: ${userInputs.useRefFace ? 'ENABLED (User wants to swap face)' : 'DISABLED (Keep original face)'}
 
-**IMPORTANT FOR final_prompt_text:**
-Construct a high-quality natural language prompt based on the analysis.
-IF "useRefFace" is TRUE, append the same note text above to the very end of the final_prompt_text (in the English section).
+${userInputs.useRefFace ?
+          `INSTRUCTION: The user has attached a Reference Face image.
+You MUST add this exact text at the very end of your 'final_prompt_text' and 'midjourney_prompt':
+" --cref [REFERENCE_FACE_IMAGE] --cw 100 " 
+(Note: Since you cannot see the file path, just act as if the user will replace [REFERENCE_FACE_IMAGE] with their file. ALSO, explicity describe the target face blending in your text prompt: "The subject features the exact facial structure and identity of the provided reference image, seamlessly blended into the scene.")`
+          :
+          `INSTRUCTION: Analyze the face present in the image and describe it in detail (Age, Ethnicity, Features, Expression).`
+        }
 `;
     } else {
       // Logic for Generate and Compose

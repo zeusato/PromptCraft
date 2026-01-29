@@ -1299,6 +1299,71 @@ Create a plan covering Pre-launch, Launch, and Post-launch:
             }
         ]
     },
+    {
+        id: 'ad-poster-generator',
+        title: 'Tạo Poster Quảng Cáo',
+        titleEn: 'Ad Poster Generator',
+        icon: 'campaign',
+        category: TaskType.MARKETING,
+        description: 'Tạo ảnh quảng cáo sản phẩm chuyên nghiệp',
+        descriptionEn: 'Create professional product advertisement images',
+        template: `***CONTEXT***
+[PRODUCT IMAGE ATTACHED]
+Based on the attached product image, create a professional studio-style product advertisement image.
+
+***TASK***
+Create a high-end commercial advertising image for the product.
+
+***REQUIREMENTS***
+1. **Subject:** The product must be central, prominent, clear, and not obscured.
+2. **Lighting:** High-quality studio lighting, clean, elegant, and modern feel.
+3. **Background:** {{background_desc}}
+   - Must be impressive and have depth.
+   - Directly related to the product's function/industry.
+   - NO cluttered or generic backgrounds.
+4. **Color Palette:** Harmonize with the product, creating trust and professionalism.
+5. **Style:** {{style}}
+
+***TECHNICAL SPECS***
+- Aspect Ratio: {{aspect_ratio}}
+- Resolution: 4K, high detail, sharp`,
+        variables: [
+            {
+                key: 'background_desc',
+                label: 'Mô tả nền',
+                labelEn: 'Background Description',
+                type: 'textarea',
+                placeholder: 'VD: Nền studio tối giản, bục gỗ sang trọng, liên quan công năng...',
+                placeholderEn: 'E.g., Minimalist studio, luxury wooden podium, related to function...',
+                default: 'Impressive, deep, related to product function/industry'
+            },
+            {
+                key: 'style',
+                label: 'Phong cách',
+                labelEn: 'Style',
+                type: 'select',
+                options: [
+                    { value: 'modern_elegant', label: 'Hiện đại & Sang trọng', labelEn: 'Modern & Elegant' },
+                    { value: 'vibrant_energetic', label: 'Rực rỡ & Năng động', labelEn: 'Vibrant & Energetic' },
+                    { value: 'minimalist', label: 'Tối giản (Minimalist)', labelEn: 'Minimalist' },
+                    { value: 'nature_organic', label: 'Thiên nhiên (Nature)', labelEn: 'Nature & Organic' }
+                ],
+                default: 'modern_elegant'
+            },
+            {
+                key: 'aspect_ratio',
+                label: 'Tỷ lệ khung hình',
+                labelEn: 'Aspect Ratio',
+                type: 'select',
+                options: [
+                    { value: '9:16', label: '9:16 (Story/TikTok)', labelEn: '9:16 (Vertical)' },
+                    { value: '1:1', label: '1:1 (Instagram/Facebook)', labelEn: '1:1 (Square)' },
+                    { value: '16:9', label: '16:9 (Youtube/Web)', labelEn: '16:9 (Landscape)' }
+                ],
+                default: '9:16'
+            }
+        ]
+    },
     // --- DATA & INTELLIGENCE ---
     // --- DATA & INTELLIGENCE ---
     {
