@@ -514,6 +514,81 @@ Add realistic colors to this black and white reference image.
         ]
     },
 
+    {
+        id: 'food-infographic',
+        title: 'Thiết kế Infographic Thực phẩm',
+        titleEn: 'Food Infographic Design',
+        icon: 'restaurant_menu',
+        category: TaskType.IMAGE,
+        description: 'Tạo infographic thực phẩm cao cấp',
+        descriptionEn: 'Create high-end food infographic',
+        template: `***CONTEXT***
+Modern, high-end infographic design about [{{food_item}}], clean, bright, and premium style, similar to infographics for high-end food/beverages.
+
+***TASK***
+Create a comprehensive culinary infographic for {{food_item}}.
+
+***INPUT DATA***
+- Food Name: {{food_item}}
+- Focus Components: {{components}}
+- Background Color: {{bg_color}}
+
+***VISUAL STYLE***
+- **Center Subject**: A [{{food_item}}] is placed in the center of the frame.
+  - Beautiful 3/4 or angled view.
+  - Natural, appealing shape.
+  - Fresh, clean, and slightly glossy surface, giving a delicious and high-end feel.
+  - Soft studio lighting with subtle shadows.
+- **Background**: {{bg_color}}.
+- **Internal Structure**: Constituent parts are shown semi-transparently or visually separated, clear, friendly – not gruesome, educational and culinary, not anatomical or medical.
+
+***INFOGRAPHIC LAYOUT***
+- **Indicators**: Each component of {{food_item}} is clearly indicated by thin, neat arrows and modern, rounded-corner cards with small, minimalist icons.
+- **Layout**: Balanced, easy-to-read, uncluttered layout.
+- **Classification System**:
+  - 🟢 **DELICIOUS – RECOMMENDED**: [Short Description] – [Nutritional Value]
+  - 🟡 **EDIBLE – SHOULD BE LIMITED**: [Reasons to Limit] – [Precautions]
+  - 🔴 **SHOULD NOT BE USED**: [Reasons] – [Avoid Recommend]
+- **Typography**: Modern sans-serif font. Clear hierarchy (Large Title > Medium Content). No cluttered text.
+- **Main Title**: "{{food_item}} – WHICH PARTS ARE DELICIOUS & SHOULD YOU USE?"
+
+***MANDATORY NOTE***
+- **Nội dung chữ thể hiện trên infographic thể hiện bằng tiếng Việt có dấu, đúng chính tả.**
+
+***NEGATIVE PROMPT***
+(explicit text, graphic text, heavy medical anatomy, hand-drawn illustrations, children's cartoons, harsh colors, cluttered layout, small and hard-to-read text, bad fonts, watermarks, unnecessary logos)`,
+        variables: [
+            {
+                key: 'food_item',
+                label: 'Tên thực phẩm',
+                labelEn: 'Food Name',
+                type: 'text',
+                placeholder: 'VD: Bò bít tết, Cá hồi...',
+                placeholderEn: 'E.g.: Steak, Salmon...'
+            },
+            {
+                key: 'components',
+                label: 'Các phần/thành phần',
+                labelEn: 'Components/Ingredients',
+                type: 'textarea',
+                placeholder: 'VD: Thăn lưng, thăn nội, nạm...',
+                placeholderEn: 'E.g.: Ribeye, Tenderloin, Brisket...'
+            },
+            {
+                key: 'bg_color',
+                label: 'Màu nền',
+                labelEn: 'Background Color',
+                type: 'select',
+                options: [
+                    { value: 'White or very light gray', label: 'Trắng/Xám nhạt', labelEn: 'White/Light Gray' },
+                    { value: 'Dark slate', label: 'Xám đậm', labelEn: 'Dark Slate' },
+                    { value: 'Warm beige', label: 'Be ấm', labelEn: 'Warm Beige' }
+                ],
+                default: 'White or very light gray'
+            }
+        ]
+    },
+
     // ========== VIDEO (2) ==========
     {
         id: 'time-lapse',

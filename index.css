@@ -1,18 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
-
 @layer base {
   :root {
     /* Light Mode */
-    --c-background: 248 250 252; /* Slate 50 */
+    --c-background: 248 250 252;
+    /* Slate 50 */
     --c-surface: 255 255 255;
-    --c-primary: 59 130 246; /* Blue 500 */
-    --c-primary-hover: 37 99 235; /* Blue 600 */
+    --c-primary: 59 130 246;
+    /* Blue 500 */
+    --c-primary-hover: 37 99 235;
+    /* Blue 600 */
     --c-secondary: 100 116 139;
-    --c-accent: 139 92 246; /* Violet 500 */
+    --c-accent: 139 92 246;
+    /* Violet 500 */
     --c-border: 226 232 240;
     --c-main: 15 23 42;
     --c-muted: 148 163 184;
@@ -20,14 +24,21 @@
 
   .dark {
     /* Modern SaaS Dark Mode */
-    --c-background: 15 23 42; /* Slate 900 */
-    --c-surface: 30 41 59; /* Slate 800 */
-    --c-primary: 59 130 246; /* Neon Blue */
-    --c-primary-hover: 96 165 250; /* Blue 400 */
+    --c-background: 15 23 42;
+    /* Slate 900 */
+    --c-surface: 30 41 59;
+    /* Slate 800 */
+    --c-primary: 59 130 246;
+    /* Neon Blue */
+    --c-primary-hover: 96 165 250;
+    /* Blue 400 */
     --c-secondary: 148 163 184;
-    --c-accent: 167 139 250; /* Violet 400 */
-    --c-border: 51 65 85; /* Slate 700 */
-    --c-main: 241 245 249; /* Slate 100 */
+    --c-accent: 167 139 250;
+    /* Violet 400 */
+    --c-border: 51 65 85;
+    /* Slate 700 */
+    --c-main: 241 245 249;
+    /* Slate 100 */
     --c-muted: 100 116 139;
   }
 
@@ -40,7 +51,7 @@
   .glass-panel {
     @apply bg-surface/40 backdrop-blur-xl border border-white/10 shadow-glass;
   }
-  
+
   .glass-button {
     @apply bg-primary/90 hover:bg-primary text-white backdrop-blur-sm shadow-lg shadow-primary/20 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98];
   }
