@@ -105,14 +105,14 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
     // --- Render Helpers ---
 
     const renderTabs = () => (
-        <div className="flex overflow-x-auto p-0 bg-surface border-b border-border sticky top-0 z-10 w-full shadow-none no-scrollbar">
+        <div className="flex overflow-x-auto p-0 glass-panel border-b border-white/5 sticky top-0 z-10 w-full shadow-none no-scrollbar backdrop-blur-md">
             {Object.values(TaskType).filter(t => t !== TaskType.MARKETING && t !== TaskType.DATA).map(tab => (
                 <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`flex-none px-6 py-4 text-[11px] font-bold uppercase tracking-wider transition-colors duration-200 border-b-2 whitespace-nowrap ${activeTab === tab
-                        ? 'border-primary text-primary bg-primary/5'
-                        : 'border-transparent text-secondary hover:text-main hover:bg-black/5 dark:hover:bg-white/5'
+                    className={`flex-none px-6 py-4 text-[11px] font-bold uppercase tracking-wider transition-all duration-200 border-b-2 whitespace-nowrap ${activeTab === tab
+                        ? 'border-primary text-primary bg-primary/10'
+                        : 'border-transparent text-secondary hover:text-main hover:bg-white/5'
                         }`}
                 >
                     <span className="leading-tight">
@@ -130,30 +130,30 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
     );
 
     const renderTargetFormatSelector = () => (
-        <div className="mt-4 pt-4 border-t border-border">
+        <div className="mt-4 pt-4 border-t border-white/10">
             <label className="block text-sm font-medium text-secondary mb-2">{t('workspace.output_format')}</label>
             <div className="flex gap-4">
-                <label className="flex items-center gap-2 cursor-pointer">
+                <label className="flex items-center gap-2 cursor-pointer group">
                     <input
                         type="radio"
                         name="targetFormat"
                         value="Text"
                         checked={inputs.targetFormat !== 'JSON'}
                         onChange={() => handleInputChange('targetFormat', 'Text')}
-                        className="text-primary focus:ring-primary bg-background border-border hover:border-primary focus:border-primary"
+                        className="text-primary focus:ring-primary bg-surface/50 border-white/10 group-hover:border-primary"
                     />
-                    <span className="text-sm text-secondary">Text</span>
+                    <span className="text-sm text-secondary group-hover:text-main transition-colors">Text</span>
                 </label>
-                <label className="flex items-center gap-2 cursor-pointer">
+                <label className="flex items-center gap-2 cursor-pointer group">
                     <input
                         type="radio"
                         name="targetFormat"
                         value="JSON"
                         checked={inputs.targetFormat === 'JSON'}
                         onChange={() => handleInputChange('targetFormat', 'JSON')}
-                        className="text-primary focus:ring-primary bg-background border-border hover:border-primary focus:border-primary"
+                        className="text-primary focus:ring-primary bg-surface/50 border-white/10 group-hover:border-primary"
                     />
-                    <span className="text-sm text-secondary">JSON</span>
+                    <span className="text-sm text-secondary group-hover:text-main transition-colors">JSON</span>
                 </label>
             </div>
         </div>
@@ -167,7 +167,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                         <div>
                             <label className="block text-sm font-medium text-slate-700 dark:text-slate-400 mb-1">{t('form.topic')}</label>
                             <textarea
-                                className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary hover:border-primary focus:border-primary rounded-xl p-3 text-main dark:text-white focus:ring-2 focus:ring-primary focus:bg-white dark:focus:bg-white/10 outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
+                                className="w-full glass-input rounded-xl p-3 outline-none"
                                 rows={4}
                                 value={inputs.topic || ''}
                                 onChange={e => handleInputChange('topic', e.target.value)}
@@ -177,7 +177,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                         <div>
                             <label className="block text-sm font-medium text-slate-700 dark:text-slate-400 mb-1">{t('form.level')}</label>
                             <select
-                                className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-xl p-3 text-main dark:text-white focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary outline-none transition-colors [&>option]:bg-white dark:[&>option]:bg-slate-900 [&>option]:text-main dark:[&>option]:text-white"
+                                className="w-full glass-input rounded-xl p-3 outline-none [&>option]:bg-surface [&>option]:text-main"
                                 value={inputs.depth || 'standard'}
                                 onChange={e => handleInputChange('depth', e.target.value)}
                             >
@@ -193,14 +193,14 @@ const Workspace: React.FC<WorkspaceProps> = ({ activeTab, setActiveTab, onRefres
                                     type="text"
                                     placeholder={t('form.timeframe')}
                                     value={inputs.timeframe || ''}
-                                    className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg px-3 py-2 text-sm text-main dark:text-white focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
+                                    className="glass-input rounded-lg px-3 py-2 text-sm w-full outline-none"
                                     onChange={e => handleInputChange('timeframe', e.target.value)}
                                 />
                                 <input
                                     type="text"
                                     placeholder={t('form.format_output')}
                                     value={inputs.format || ''}
-                                    className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary focus:border-primary rounded-lg px-3 py-2 text-sm text-main dark:text-white focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary outline-none transition-colors placeholder-slate-400 dark:placeholder-slate-500"
+                                    className="glass-input rounded-lg px-3 py-2 text-sm w-full outline-none"
                                     onChange={e => handleInputChange('format', e.target.value)}
                                 />
                             </div>

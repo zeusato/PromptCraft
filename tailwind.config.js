@@ -23,33 +23,34 @@ export default {
                 muted: 'rgb(var(--c-muted) / <alpha-value>)',
             },
             fontFamily: {
-                sans: ['Inter', 'sans-serif'], // Keep Inter for clean UI
-                heading: ['Outfit', 'sans-serif'], // Optional for headers if we add it
+                sans: ['Inter', 'sans-serif'],
+                mono: ['JetBrains Mono', 'monospace'],
             },
             animation: {
                 'fade-in-up': 'fadeInUp 0.5s ease-out',
-                'pulse-glow': 'pulseGlow 2s infinite',
-                'float': 'float 3s ease-in-out infinite',
+                'pulse-soft': 'pulseSoft 3s infinite',
+                'float': 'float 6s ease-in-out infinite',
             },
             keyframes: {
                 fadeInUp: {
                     '0%': { opacity: '0', transform: 'translateY(10px)' },
                     '100%': { opacity: '1', transform: 'translateY(0)' },
                 },
-                pulseGlow: {
-                    '0%, 100%': { opacity: '1', boxShadow: '0 0 10px rgba(255, 95, 31, 0.5)' },
-                    '50%': { opacity: '0.8', boxShadow: '0 0 20px rgba(255, 95, 31, 0.8)' },
+                pulseSoft: {
+                    '0%, 100%': { opacity: '1' },
+                    '50%': { opacity: '0.7' },
                 },
                 float: {
                     '0%, 100%': { transform: 'translateY(0)' },
-                    '50%': { transform: 'translateY(-5px)' },
+                    '50%': { transform: 'translateY(-10px)' },
                 }
             },
             boxShadow: {
-                'neon': '0 0 5px theme("colors.primary"), 0 0 20px theme("colors.primary")',
                 'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+                'neon': '0 0 10px theme("colors.primary"), 0 0 40px theme("colors.primary")',
             },
             backgroundImage: {
+                'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
             }
         },
     },

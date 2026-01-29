@@ -2,63 +2,57 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
 @layer base {
   :root {
-    /* Light Mode Colors (Slate based) */
-    --c-background: 248 250 252;
-    /* Slate 50 */
+    /* Light Mode */
+    --c-background: 248 250 252; /* Slate 50 */
     --c-surface: 255 255 255;
-    /* White */
-    --c-primary: 99 102 241;
-    /* Indigo 500 */
-    --c-primary-hover: 79 70 229;
-    /* Indigo 600 */
+    --c-primary: 59 130 246; /* Blue 500 */
+    --c-primary-hover: 37 99 235; /* Blue 600 */
     --c-secondary: 100 116 139;
-    /* Slate 500 */
-    --c-accent: 6 182 212;
-    /* Cyan 500 */
+    --c-accent: 139 92 246; /* Violet 500 */
     --c-border: 226 232 240;
-    /* Slate 200 */
     --c-main: 15 23 42;
-    /* Slate 900 */
     --c-muted: 148 163 184;
-    /* Slate 400 */
   }
 
   .dark {
-    /* Cosmic Dark Mode */
-    --c-background: 3 7 18;
-    /* Gray 950 */
-    --c-surface: 15 23 42;
-    /* Slate 900 */
-    --c-primary: 255 95 31;
-    /* Neon Orange */
-    --c-primary-hover: 234 88 12;
-    /* Orange 600 */
+    /* Modern SaaS Dark Mode */
+    --c-background: 15 23 42; /* Slate 900 */
+    --c-surface: 30 41 59; /* Slate 800 */
+    --c-primary: 59 130 246; /* Neon Blue */
+    --c-primary-hover: 96 165 250; /* Blue 400 */
     --c-secondary: 148 163 184;
-    /* Slate 400 */
-    --c-accent: 6 182 212;
-    /* Cyan 500 */
-    --c-border: 30 41 59;
-    /* Slate 800 */
-    --c-main: 248 250 252;
-    /* Slate 50 */
+    --c-accent: 167 139 250; /* Violet 400 */
+    --c-border: 51 65 85; /* Slate 700 */
+    --c-main: 241 245 249; /* Slate 100 */
     --c-muted: 100 116 139;
-    /* Slate 500 */
   }
 
   body {
-    @apply bg-background text-main antialiased selection:bg-primary selection:text-white transition-colors duration-300;
+    @apply bg-background text-main antialiased selection:bg-primary/30 selection:text-primary-hover transition-colors duration-300 font-sans;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-surface/40 backdrop-blur-xl border border-white/10 shadow-glass;
+  }
+  
+  .glass-button {
+    @apply bg-primary/90 hover:bg-primary text-white backdrop-blur-sm shadow-lg shadow-primary/20 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98];
+  }
+
+  .glass-input {
+    @apply bg-surface/30 backdrop-blur-sm border border-white/10 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-300 text-main placeholder-muted;
   }
 }
 
 @layer utilities {
   .text-shadow {
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-  }
-
-  .text-shadow-lg {
-    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   }
 
   .scrollbar-thin::-webkit-scrollbar {
@@ -71,11 +65,6 @@
   }
 
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    @apply bg-border rounded-full hover:bg-secondary/50 transition-colors;
-  }
-
-  /* Custom utility to hide noise on light mode if needed */
-  .hide-noise-light {
-    /* Implementation handled via conditional rendering or class logic in components */
+    @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
   }
 }

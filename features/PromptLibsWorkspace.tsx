@@ -182,13 +182,13 @@ const PromptLibsWorkspace: React.FC<PromptLibsWorkspaceProps> = () => {
         <div className="flex flex-col md:flex-row h-[100dvh] w-full overflow-hidden gap-0 md:gap-6 md:p-0 bg-background/50 md:bg-transparent">
 
             {/* Left Side - Preview Area (Desktop) */}
-            <div className="hidden md:flex md:w-2/3 flex-none bg-white/80 dark:bg-[#050b14]/80 backdrop-blur-2xl rounded-none md:rounded-l-lg border-r border-border dark:border-white/5 overflow-hidden shadow-2xl relative flex-col">
+            <div className="hidden md:flex md:w-2/3 flex-none glass-panel rounded-none md:rounded-l-lg border-r border-white/5 overflow-hidden relative flex-col shadow-2xl">
                 <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-transparent pointer-events-none"></div>
 
                 {selectedTemplate ? (
                     <div className="flex flex-col h-full relative z-10">
                         {/* Header */}
-                        <div className="p-6 border-b border-border dark:border-white/10 flex items-center justify-between">
+                        <div className="p-6 border-b border-white/10 flex items-center justify-between">
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-lg bg-primary/20 text-primary flex items-center justify-center">
                                     <span className="material-symbols-rounded">{selectedTemplate.icon}</span>
@@ -226,7 +226,7 @@ const PromptLibsWorkspace: React.FC<PromptLibsWorkspaceProps> = () => {
                                 <h3 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
                                     {isVi ? 'Xem trước Prompt' : 'Prompt Preview'}
                                 </h3>
-                                <div className="bg-black/5 dark:bg-black/30 rounded-xl p-4 font-mono text-sm text-main dark:text-slate-200 leading-relaxed border border-white/10 min-h-[500px]">
+                                <div className="bg-black/20 rounded-xl p-4 font-mono text-sm text-main dark:text-slate-200 leading-relaxed border border-white/10 min-h-[500px]">
                                     {outputMode === PromptFormat.JSON ? (
                                         <pre className="text-emerald-500 dark:text-emerald-400 whitespace-pre-wrap break-all font-mono">
                                             {JSON.stringify(
@@ -259,10 +259,10 @@ const PromptLibsWorkspace: React.FC<PromptLibsWorkspaceProps> = () => {
                         </div>
 
                         {/* Copy Button */}
-                        <div className="p-4 border-t border-border dark:border-white/10 bg-white/80 dark:bg-black/20">
+                        <div className="p-4 border-t border-white/10 bg-white/5">
                             <button
                                 onClick={handleCopy}
-                                className="w-full bg-primary hover:bg-primary-hover text-white font-bold py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-neon"
+                                className="w-full glass-button font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-neon"
                             >
                                 <span className="material-symbols-rounded">content_copy</span>
                                 {isVi ? 'Sao chép Prompt' : 'Copy Prompt'}
@@ -271,7 +271,7 @@ const PromptLibsWorkspace: React.FC<PromptLibsWorkspaceProps> = () => {
                     </div>
                 ) : (
                     <div className="h-full flex items-center justify-center text-slate-500/50 flex-col gap-6">
-                        <div className="p-8 rounded-full bg-white/5 animate-pulse-glow">
+                        <div className="p-8 rounded-full bg-white/5 animate-pulse-soft">
                             <span className="material-symbols-rounded text-6xl opacity-50 text-primary">library_books</span>
                         </div>
                         <p className="text-lg font-medium text-slate-400">
@@ -282,10 +282,10 @@ const PromptLibsWorkspace: React.FC<PromptLibsWorkspaceProps> = () => {
             </div>
 
             {/* Right Side - Library & Variables */}
-            <div className="w-full md:w-1/3 bg-surface/50 backdrop-blur-xl border-l border-white/5 flex flex-col flex-1 min-h-0 md:h-full shadow-glass z-20 rounded-none md:rounded-r-lg overflow-hidden">
+            <div className="w-full md:w-1/3 glass-panel border-l border-white/5 flex flex-col flex-1 min-h-0 md:h-full z-20 rounded-none md:rounded-r-lg overflow-hidden shadow-glass">
 
                 {/* Category Tabs */}
-                <div className="flex p-2 bg-surface border-b border-border sticky top-0 z-10 gap-2 overflow-x-auto hide-scrollbar">
+                <div className="flex p-2 border-b border-white/10 sticky top-0 z-10 gap-2 overflow-x-auto hide-scrollbar bg-black/5">
                     {categories.map(cat => (
                         <button
                             key={cat}
@@ -305,7 +305,7 @@ const PromptLibsWorkspace: React.FC<PromptLibsWorkspaceProps> = () => {
                 </div>
 
                 {/* Search Box */}
-                <div className="p-3 border-b border-border dark:border-white/10">
+                <div className="p-3 border-b border-white/10">
                     <div className="relative">
                         <span className="material-symbols-rounded absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
                         <input
@@ -313,7 +313,7 @@ const PromptLibsWorkspace: React.FC<PromptLibsWorkspaceProps> = () => {
                             value={searchQuery}
                             onChange={e => setSearchQuery(e.target.value)}
                             placeholder={isVi ? 'Tìm kiếm prompt...' : 'Search prompts...'}
-                            className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-sm text-main dark:text-white outline-none hover:border-primary focus:border-primary focus:ring-2 focus:ring-primary transition-colors placeholder-slate-400 dark:placeholder-slate-500"
+                            className="w-full glass-input rounded-lg pl-10 pr-4 py-2.5 text-sm outline-none"
                         />
                         {searchQuery && (
                             <button
